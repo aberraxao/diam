@@ -4,19 +4,25 @@
     <meta charset="UTF-8">
     <title>Concurso de projetos de fim de curso</title>
     <style>
+        * {
+            font-family: sans-serif;
+        }
         table, td, th {
             border: 1px solid;
             border-collapse: collapse;
         }
+        h1, h2 {
+            color: darkblue;
+        }
     </style>
 </head>
-<body>
+<body style="background-color: lightgrey">
 
 <div>
-    <h1>Bem vindo(a) ao concurso de projetos de fim de curso!</h1>
     <a href="https://www.iscte.pt" target="_blank">
-        <img src="./images/iscte_logo.png" width="25%" alt="ISCTE logo">
+        <img src="./images/iscte_logo.png" width="25%" alt="ISCTE logo" title="ISCTE">
     </a>
+    <h1>Bem vindo(a) ao concurso de projetos de fim de curso!</h1>
 </div>
 <div>
     <h2>Submissão de projeto</h2>
@@ -35,7 +41,6 @@
            Nome: <input type="text">
            Número: <input type="number">
            Contacto: <input type="tel">
-
         <p>
         <p>
             <input type="radio" name="horario" value="horario_1">18:00h-18:30h
@@ -82,18 +87,19 @@
 <div>
     <h2>Informações sobre o concurso</h2>
     <p>
-        Os projetos têm de ser entregues até 31 de Maio.
-        Os projetos serão avaliados por um jurí composto pelos professores dda unidade curricular Desenvolvimento para
+        Os projetos têm de ser entregues até <span style="color: purple; font-weight: bold">31 de Maio</span>.
+        Os projetos serão avaliados por um jurí composto pelos professores da unidade curricular Desenvolvimento para
         A Internet e Aplicações Móveis.<br>
-    </p>
-    <p>
         Os melhores projetos serão recompensados com o financiamento de uma viagem de fim de curso.<br>
         Os prémios serão anunciados numa festa de finalistas em Julho.
     </p>
 </div>
 <div>
     <h2>Contactos</h2>
-
+    <address>
+        <strong>Tel: </strong><a href="tel:+351987654321">+351 987 654 321</a><br>
+        <strong>E-mail: </strong><a href="mailto:webmaster@example.com">Tomás Brandão</a>
+    </address>
 </div>
 </body>
 </html>
