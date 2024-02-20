@@ -1,0 +1,46 @@
+body {
+    font-family: arial, helvitica, sans-serif;
+}
+
+#header, #nav {
+    background-color: darkgreen;
+    overflow: auto;
+}
+
+#header h1 {
+    color: aliceblue;
+}
+
+#banner {
+    background-image: url("../images/green-yellow-light.jpg");
+    background-size: 100% 100%;
+    text-align: center;
+    padding: 40px;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#nav a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+#nav a:hover {
+    color: orange;
+}
+
+#nav a:active {
+    color: red;
+}
+
+#nav li {
+    display: inline;
+    padding-right: 20px;
+}
+
+#nav ul {
+    padding: 0;
+}
