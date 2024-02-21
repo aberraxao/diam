@@ -1,0 +1,57 @@
+* {
+    font-family: sans-serif;
+}
+
+header {
+    background-color: lightgrey;
+    color: darkblue;
+}
+
+
+#banner {
+    background-image: url("../images/bluelight.jpg");
+    background-size: 100% 100%;
+    text-align: center;
+    padding: 40px;
+    object-fit: cover;
+}
+
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+nav {
+    background-color: aquamarine;
+}
+
+nav a {
+    text-decoration: none;
+    color: dodgerblue;
+}
+
+nav a:hover {
+    color: orange;
+}
+
+nav a:active {
+    color: red;
+}
+
+nav li {
+    display: inline;
+    padding-right: 20px;
+}
+
+nav ul {
+    padding: 0;
+}
+
+
+table, td, th {
+    border: 1px solid;
+    border-collapse: collapse;
+}
