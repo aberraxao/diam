@@ -44,3 +44,16 @@ body {
 #nav ul {
     padding: 0;
 }
+
+#articles {
+    display: inline-block;
+    width: 70%;
+    background-color: antiquewhite;
+}
+
+#aside {
+    display: inline-block;
+    width: 29%;
+    background-color: darkgreen;
+    vertical-align: top;
+}
