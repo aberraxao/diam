@@ -4,9 +4,10 @@
 
 body {
     font-family: arial, helvitica, sans-serif;
+    margin: 0;
 }
 
-#header, #nav {
+#header, #nav, #footer {
     background-color: darkgreen;
     overflow: auto;
 }
@@ -60,4 +61,9 @@ body {
     background-color: darkseagreen;
     vertical-align: top;
     padding: 0 10px;
+}
+
+#footer {
+    color: azure;
+    text-align: center;
 }
