@@ -1,8 +1,13 @@
-body {
-    font-family: arial, helvitica, sans-serif;
+* {
+    box-sizing: border-box;
 }
 
-#header, #nav {
+body {
+    font-family: arial, helvitica, sans-serif;
+    margin: 0;
+}
+
+#header, #nav, #footer {
     background-color: darkgreen;
     overflow: auto;
 }
@@ -48,12 +53,17 @@ body {
 #articles {
     display: inline-block;
     width: 70%;
-    background-color: antiquewhite;
 }
 
 #aside {
     display: inline-block;
     width: 29%;
-    background-color: darkgreen;
+    background-color: darkseagreen;
     vertical-align: top;
+    padding: 0 10px;
+}
+
+#footer {
+    color: azure;
+    text-align: center;
 }
