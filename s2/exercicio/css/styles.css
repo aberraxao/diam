@@ -1,57 +1,76 @@
 * {
-    font-family: sans-serif;
+    box-sizing: border-box;
 }
 
-header {
-    background-color: lightgrey;
-    color: darkblue;
+body {
+    margin: 0;
+    background-color: bisque;
 }
-
-
-#banner {
-    background-image: url("../images/bluelight.jpg");
-    background-size: 100% 100%;
+h1, h2 {
+    margin: 0;
     text-align: center;
-    padding: 40px;
-    object-fit: cover;
 }
 
+h1 {
+    color: #483C32;
+    font-style: italic;
+}
 
-.container {
+h2 {
+    text-decoration: underline;
+    color: orange;
+}
+
+header, footer {
+    background-color: beige;
+    text-align: center;
+}
+
+header img {
+    width: 85%;
+}
+
+.flex-container {
     width: 80%;
     margin: 0 auto;
     display: flex;
     flex-flow: row wrap;
+    text-align: justify;
 }
 
 nav {
-    background-color: aquamarine;
+    background-color: aqua;
+    margin: 35px;
 }
 
 nav a {
-    text-decoration: none;
-    color: dodgerblue;
+    padding-left: 5%;
 }
 
 nav a:hover {
-    color: orange;
-}
-
-nav a:active {
     color: red;
 }
 
-nav li {
-    display: inline;
-    padding-right: 20px;
+nav a:active {
+    color: yellow;
 }
 
-nav ul {
-    padding: 0;
+article {
+    width: 69%;
+    background-color: gold;
+    color: #483C32;
+    margin: 35px;
 }
 
+article span {
+    color: red;
+}
 
-table, td, th {
-    border: 1px solid;
-    border-collapse: collapse;
+section {
+    margin: 15px;
+}
+
+aside {
+
+    width: 25%;
 }
