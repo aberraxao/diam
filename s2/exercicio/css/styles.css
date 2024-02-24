@@ -15,7 +15,8 @@ header, footer {
 }
 
 header img {
-    width: 85%;
+    width: 750px;
+    max-width: 100%;
 }
 
 article, aside {
@@ -61,7 +62,8 @@ fieldset {
 }
 
 figure img {
-    width: 50%;
+    width: 400px;
+    max-width: 100%;
 }
 
 figure figcaption {
@@ -70,8 +72,6 @@ figure figcaption {
 }
 
 footer {
-    position: fixed;
-    border: 40px;
     color: white;
 }
 

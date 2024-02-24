@@ -6,39 +6,52 @@
         <link rel="stylesheet" type="text/css" href="./css/styles.css">
     </head>
     <body>
-        <div>
+        <header>
             <h2>Submissão de projeto</h2>
+        </header>
+        <nav>
+            <a href="main.html">Página inicial</a>
+            <a href="submited.html">Projectos submetidos</a>
+        </nav>
+        <section>
             <form action="submited.html">
-                Título: <input type="text"><br>
-                Descrição: <input type="text">
-                <p>Aluno 1<br>
-                   Nome: <input type="text">
-                   Número: <input type="number">
-                   Contacto: <input type="tel">
-                <p>Aluno 2<br>
-                   Nome: <input type="text">
-                   Número: <input type="number">
-                   Contacto: <input type="tel">
-                <p>Aluno 2<br>
-                   Nome: <input type="text">
-                   Número: <input type="number">
-                   Contacto: <input type="tel">
-                <p>
+                Título: <input type="text"><br><br>
+                Descrição: <input type="text"><br><br>
+                Aluno 1<br>
+                Nome: <input type="text">
+                Número: <input type="number">
+                Contacto: <input type="tel"><br><br>
+                Aluno 2<br>
+                Nome: <input type="text">
+                Número: <input type="number">
+                Contacto: <input type="tel"><br><br>
+                Aluno 3<br>
+                Nome: <input type="text">
+                Número: <input type="number">
+                Contacto: <input type="tel"><br><br>
                 <label for="escolha-tipo-projeto" > Escolha um projeto: </label> <br>
                  <input list="tipo_projeto" id="escolha-tipo-projeto" name="escolha-tipo-projeto">
                     <datalist id="tipo_projeto">
-                        <option value="informática"></option>
-                        <option value="telecomunicações"></option>
-                        <option value="gestão"></option>
+                        <option value="Informática"></option>
+                        <option value="Telecomunicações"></option>
+                        <option value="Gestão"></option>
                     </datalist>
-                <p>
-                    <input type="radio" name="horario" value="horario_1">18:00h-18:30h
-                    <input type="radio" name="horario" value="horario_2">18:30h-19:00h
-                    <input type="radio" name="horario" value="horario_3">19:00h-19:30h
+                <br>
+                    <input type="radio" name="horario" value="horario_1">18:00h-18:30h<br>
+                    <input type="radio" name="horario" value="horario_2">18:30h-19:00h<br>
+                    <input type="radio" name="horario" value="horario_3">19:00h-19:30h<br>
                     <input type="radio" name="horario" value="horario_4" checked>19:30h-20:00h
                     <br>
                 <p><input type="submit" value="Submeter projeto">
             </form>
-        </div>
+        </section>
+        <footer>
+            <address>
+                Tel: <a href="tel:+351217650564">+351 217 650 564</a>
+                E-mail: <a href="mailto:tomas.brandao@iscte-iul.pt">Tomás Brandão</a>
+                Morada: <a href="https://maps.app.goo.gl/q4BiVnWmCuJZpD8DA" target="_blank">
+                Avenida das Forças Armadas, ISCTE, Sala D6.18, 1649-026, Lisboa</a>
+            </address>
+        </footer>
     </body>
 </html>
