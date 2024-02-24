@@ -57,11 +57,14 @@ section {
     margin-right: 1%;
 }
 
-aside {
-    width: 30%;
-    background-color: darkseagreen;
-    vertical-align: top;
-    padding: 0 10px;
+aside{
+    float: right;
+    width: 25%;
+    background-color: lightsalmon;
+}
+
+.aside{
+    padding: 5px;
 }
 
 footer {

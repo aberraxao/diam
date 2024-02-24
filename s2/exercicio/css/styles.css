@@ -4,7 +4,7 @@
 
 body {
     margin: 0;
-    background-color: bisque;
+    background-color: whitesmoke;
 }
 h1, h2 {
     margin: 0;
@@ -18,28 +18,29 @@ h1 {
 
 h2 {
     text-decoration: underline;
-    color: orange;
-}
-
-header, footer {
-    background-color: beige;
-    text-align: center;
+    color: darkgrey;
 }
 
 header img {
     width: 85%;
 }
 
-.flex-container {
-    width: 80%;
-    margin: 0 auto;
-    display: flex;
-    flex-flow: row wrap;
-    text-align: justify;
+img{
+    vertical-align: middle;
+}
+
+figure{
+    vertical-align: middle;
+}
+
+
+.inline_display{
+    display: inline-block;
+    padding-inline: 5px;
 }
 
 nav {
-    background-color: aqua;
+    background-color: lightslategrey;
     margin: 35px;
 }
 
@@ -57,7 +58,7 @@ nav a:active {
 
 article {
     width: 69%;
-    background-color: gold;
+    background-color: lightslategrey;
     color: #483C32;
     margin: 35px;
 }
@@ -70,7 +71,39 @@ section {
     margin: 15px;
 }
 
-aside {
-
+aside{
+    float: right;
     width: 25%;
+    background-color: slategrey;
+}
+
+.aside{
+    padding: 5px;
+}
+
+footer{
+
+    border-top-style: solid;
+    border-top-color: darkblue;
+    border-top-width: 1px;
+
+    border-bottom-style: solid;
+    border-bottom-color: darkblue;
+    border-bottom-width: 1px;
+
+
+}
+
+datalist{
+    padding-bottom: 10px;
+}
+
+fieldset{
+    padding: 10px;
+    width: 25%;
+}
+
+figcaption{
+   font-size: 20px;
+   text-shadow: 0.1em 0.1em 0.2em black;
 }
