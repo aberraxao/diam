@@ -81,4 +81,28 @@ footer a {
 
 table, th, td {
     border: 2px solid white;
+    background-color: #4d4dff;
+}
+
+
+.flex-container {
+    display: flex;
+    text-align: left;
+    flex-flow: row wrap;
+}
+
+.small {
+    width: 30%;
+    padding: 1%;
+}
+
+nav, input[type=submit] {
+    background-color: #1a1aff;
+    color:white;
+    border: none;
+    font-weight: bold;
+    font-size: large;
+    padding: 16px 32px;
+    margin: 4px 2px;
+    cursor: pointer;
 }
