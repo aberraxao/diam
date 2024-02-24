@@ -78,3 +78,7 @@ footer {
 footer a {
     color: yellow;
 }
+
+table {
+    border: 2px solid white;
+}
