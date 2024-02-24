@@ -1,42 +1,30 @@
 body {
-    margin: 0;
-    background-color: whitesmoke;
+    background-color: #8080ff;
 }
 
-h1, h2 {
-    margin: 0;
+h1, h2, h3 {
     text-align: center;
-}
-
-h1 {
-    color: #483C32;
+    color: white;
     font-style: italic;
-}
-
-h2 {
     text-decoration: underline;
-    color: darkgrey;
 }
 
-header {
+header, footer {
     text-align: center;
+    background-color: #1a1aff;
 }
 
 header img {
     width: 85%;
 }
 
-.inline_display{
-    display: inline-block;
-    padding-inline: 5px;
-}
-
-nav {
-    background-color: lightslategrey;
-    margin: 35px;
+article, aside {
+    background-color: #4d4dff;
+    color: black;
 }
 
 nav a {
+    color: yellow;
     padding-left: 5%;
 }
 
@@ -44,42 +32,23 @@ nav a:hover {
     color: red;
 }
 
-nav a:active {
-    color: yellow;
-}
-
 article {
-    width: 69%;
-    background-color: lightslategrey;
-    color: #483C32;
-    margin: 35px;
+    width: 70%;
+    text-align: justify;
 }
 
 article span {
-    color: red;
+    color: yellow;
 }
 
 section {
     margin: 15px;
 }
 
-aside{
+aside {
     float: right;
     width: 25%;
-    background-color: slategrey;
-}
-
-.aside{
-    padding: 5px;
-}
-
-footer {
-    border-top-style: solid;
-    border-top-color: darkblue;
-    border-top-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: darkblue;
-    border-bottom-width: 1px;
+    text-align: justify;
 }
 
 datalist {
@@ -91,7 +60,21 @@ fieldset {
     width: 25%;
 }
 
-figcaption {
-   font-size: 20px;
-   text-shadow: 0.1em 0.1em 0.2em black;
+figure img {
+    width: 50%;
+}
+
+figure figcaption {
+    color: white;
+    font-style: italic;
+}
+
+footer {
+    position: fixed;
+    border: 40px;
+    color: white;
+}
+
+footer a {
+    color: yellow;
 }
