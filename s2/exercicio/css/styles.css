@@ -2,6 +2,7 @@ body {
     margin: 0;
     background-color: whitesmoke;
 }
+
 h1, h2 {
     margin: 0;
     text-align: center;
@@ -15,6 +16,10 @@ h1 {
 h2 {
     text-decoration: underline;
     color: darkgrey;
+}
+
+header {
+    text-align: center;
 }
 
 header img {
@@ -68,8 +73,7 @@ aside{
     padding: 5px;
 }
 
-footer{
-
+footer {
     border-top-style: solid;
     border-top-color: darkblue;
     border-top-width: 1px;
