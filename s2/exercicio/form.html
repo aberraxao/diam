@@ -23,6 +23,16 @@
            Número: <input type="number">
            Contacto: <input type="tel">
         <p>
+        <label for="escolha-tipo-projeto" > Escolha um projeto: </label> <br>
+	     <input list="tipo_projeto" id="escolha-tipo-projeto" name="escolha-tipo-projeto">
+
+
+	        <datalist id="tipo_projeto">
+		        <option value="informática"></option>
+		        <option value="telecomunicações"></option>
+		        <option value="gestão"></option>
+	        </datalist>
+
         <p>
             <input type="radio" name="horario" value="horario_1">18:00h-18:30h
             <input type="radio" name="horario" value="horario_2">18:30h-19:00h
