@@ -3,35 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulário de submissão</title>
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
 </head>
 <body>
-<div>
-    <h2>Submissão de projeto</h2>
-    <form action="submited.html">
-        Título: <input type="text"><br>
-        Descrição: <input type="text">
-        <p>Aluno 1<br>
-           Nome: <input type="text">
-           Número: <input type="number">
-           Contacto: <input type="tel">
-        <p>Aluno 2<br>
-           Nome: <input type="text">
-           Número: <input type="number">
-           Contacto: <input type="tel">
-        <p>Aluno 2<br>
-           Nome: <input type="text">
-           Número: <input type="number">
-           Contacto: <input type="tel">
-        <p>
-        <p>
-            <input type="radio" name="horario" value="horario_1">18:00h-18:30h
-            <input type="radio" name="horario" value="horario_2">18:30h-19:00h
-            <input type="radio" name="horario" value="horario_3">19:00h-19:30h
-            <input type="radio" name="horario" value="horario_4" checked>19:30h-20:00h
-            <br>
-        <p><input type="submit" value="Submeter projeto">
-    </form>
-</div>
+    <header>
+        <a href="https://www.iscte.pt" target="_blank">
+            <img src="./images/iscte_logo.png" width="25%" alt="ISCTE logo" title="ISCTE">
+        </a>
+    </header>
+    <nav>
+        <a href="main.html">Página inicial</a>
+        <a href="submited.html">Projectos submetidos</a>
+    </nav>
+    <main>
+        <h2>Submissão de projeto</h2>
+
+        <form action="submited.html">
+            <section>
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" width="300px"><br>
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" name="descricao" width="600px"><br>
+            </section>
+            <section class="flex-container">
+                <article>
+                    <h3>Aluno 1</h3>
+                    <label for="nome_aluno_1">Nome:</label><br>
+                    <input type="text" id="nome_aluno_1" name="nome_aluno"><br>
+                    <label for="numero_aluno_1">Número:</label><br>
+                    <input type="number" id="numero_aluno_1" name="numero_aluno"><br>
+                    <label for="tel_aluno_1">Contacto (formato: +351XXXXXXXXX):</label><br>
+                    <input type="tel" id="tel_aluno_1" pattern="^(\+?351)\d{9}$" name="tel"><br>
+                </article>
+                <article>
+                    <h3>Aluno 2</h3>
+                    <label for="nome_aluno_2">Nome:</label><br>
+                    <input type="text" id="nome_aluno_2" name="nome_aluno"><br>
+                    <label for="numero_aluno_2">Número:</label><br>
+                    <input type="number" id="numero_aluno_2" name="numero_aluno"><br>
+                    <label for="tel_aluno_2">Contacto (formato: +351XXXXXXXXX):</label><br>
+                    <input type="tel" id="tel_aluno_2" pattern="^(\+?351)\d{9}$" name="tel"><br>
+                </article>
+                <article>
+                    <h3>Aluno 3</h3>
+                    <label for="nome_aluno_3">Nome:</label><br>
+                    <input type="text" id="nome_aluno_3" name="nome_aluno"><br>
+                    <label for="numero_aluno_3">Número:</label><br>
+                    <input type="number" id="numero_aluno_3" name="numero_aluno"><br>
+                    <label for="tel_aluno_3">Contacto (formato: +351XXXXXXXXX):</label><br>
+                    <input type="tel" id="tel_aluno_3" pattern="^(\+?351)\d{9}$" name="tel"><br>
+                </article>
+            </section>
+            <section>
+                <label for="escolha-tipo-projeto"> Escolha um projeto: </label>
+                <input list="tipo_projeto" id="escolha-tipo-projeto" name="escolha-tipo-projeto">
+
+                <datalist id="tipo_projeto">
+                    <option value="Informática"></option>
+                    <option value="Telecomunicações"></option>
+                    <option value="Gestão"></option>
+                </datalist>
+            </section>
+            <section>
+                <label for="horario_1">18:00h-18:30h</label>
+                <input type="radio" id="horario_1" name="horario" value="horario_1">
+                <label for="horario_2">18:30h-19:00h</label>
+                <input type="radio" id="horario_2" name="horario" value="horario_2">
+                <label for="horario_3">19:00h-19:30h</label>
+                <input type="radio" id="horario_3" name="horario" value="horario_3">
+                <label for="horario_4">19:30h-20:00h</label>
+                <input type="radio" id="horario_4" name="horario" value="horario_4" checked>
+            </section>
+            <section>
+                <input type="submit" value="Submeter projeto">
+            </section>
+        </form>
+    </main>
+    <footer>
+        <address>
+            Tel: <a href="tel:+351217650564">+351 217 650 564</a>
+            E-mail: <a href="mailto:tomas.brandao@iscte-iul.pt">Tomás Brandão</a>
+            Morada: <a href="https://maps.app.goo.gl/q4BiVnWmCuJZpD8DA" target="_blank">
+            Avenida das Forças Armadas, ISCTE, Sala D6.18, 1649-026, Lisboa</a>
+        </address>
+    </footer>
 
 </body>
 </html>

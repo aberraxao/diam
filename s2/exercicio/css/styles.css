@@ -1,46 +1,52 @@
 * {
     box-sizing: border-box;
+    font-family: sans-serif, Arial;
 }
 
 body {
-    margin: 0;
-    background-color: bisque;
+    background-color: whitesmoke;
 }
-h1, h2 {
-    margin: 0;
+
+header {
     text-align: center;
+
+}
+
+h1, h2 {
+    margin: 15px 0 ;
 }
 
 h1 {
     color: #483C32;
     font-style: italic;
+    text-align: center;
 }
 
 h2 {
     text-decoration: underline;
-    color: orange;
+    color: darkgrey;
+    text-align: left;
 }
 
-header, footer {
-    background-color: beige;
-    text-align: center;
+h3 {
+    font-weight: bold;
+    color: blue;
 }
 
-header img {
-    width: 85%;
+figure {
+    background-color: darkgrey;
+    padding: 25px;
 }
 
-.flex-container {
-    width: 80%;
-    margin: 0 auto;
-    display: flex;
-    flex-flow: row wrap;
-    text-align: justify;
+nav, footer {
+    margin: 10px auto;
 }
 
 nav {
-    background-color: aqua;
-    margin: 35px;
+    font-size: x-large;
+    font-weight: bold;
+    background-color: lightskyblue;
+    padding: 20px;
 }
 
 nav a {
@@ -48,18 +54,16 @@ nav a {
 }
 
 nav a:hover {
-    color: red;
+    color: white;
 }
 
 nav a:active {
-    color: yellow;
+    color: purple;
 }
 
 article {
-    width: 69%;
-    background-color: gold;
-    color: #483C32;
-    margin: 35px;
+    padding: 35px;
+    margin-bottom: 5px;
 }
 
 article span {
@@ -67,10 +71,52 @@ article span {
 }
 
 section {
-    margin: 15px;
+    width: 80%;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 aside {
+    float: right;
+    padding: 35px;
+    width: 20%;
+    background-color: lightsalmon;
+}
 
+.flex-container {
+    display: flex;
+    text-align: justify;
+    flex-flow: row wrap;
+}
+
+footer {
+    border-top-style: solid;
+    border-top-width: 1px;
+
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+datalist {
+    padding-bottom: 10px;
+}
+
+fieldset {
+    padding: 10px;
     width: 25%;
+}
+
+figcaption {
+    font-size: 20px;
+    text-shadow: 0.1em 0.1em 0.2em black;
+}
+
+input[type=submit] {
+    background-color: lightskyblue;
+    border: none;
+    font-weight: bold;
+    font-size: large;
+    padding: 16px 32px;
+    margin: 4px 2px;
+    cursor: pointer;
 }
