@@ -25,8 +25,8 @@ def ex2():
     _print('d')
     print('valores:', list(disciplinas_3ano.values()))
 
-    _print('e')  # TODO: dúvida: é necessário mostrar as notas?
-    print('ordenado:', sorted(disciplinas_3ano.keys()))
+    _print('e')
+    print('ordenado:', dict(sorted(disciplinas_3ano.items())))
 
     _print('f')
     existe_disciplina(disciplinas_3ano, 'DIAM')
@@ -43,7 +43,6 @@ def ex2():
     print('tres melhores disciplinas', tres_melhores_disciplinas(disciplinas_3ano))
 
 
-# TODO: posso usar Dict e List do typing module?
 def existe_disciplina(disciplinas: Dict[str, float], nome: str) -> None:
     if nome in disciplinas.keys():
         print(f'{nome} existe no dicionario')
