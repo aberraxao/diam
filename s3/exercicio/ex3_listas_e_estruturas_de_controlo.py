@@ -1,3 +1,6 @@
+from typing import List
+
+
 def _print(alinea: str) -> None:
     print(f'{10 * '-'} {alinea} {10 * '-'}')
 
@@ -20,7 +23,7 @@ def ex3():
     print('lista ordenadas:', lista_ordenada)
 
 
-def selection_sort(lista: list):
+def selection_sort(lista: list) -> List[int]:
     for i in range(0, len(lista)):
         min_index = i
 
@@ -37,7 +40,7 @@ def selection_sort(lista: list):
     return lista
 
 
-def selection_sort_pythonica(lista: list):
+def selection_sort_pythonica(lista: list) -> List[int]:
     for i in range(0, len(lista)):
         min_index = i
 
