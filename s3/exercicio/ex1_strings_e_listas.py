@@ -17,30 +17,35 @@ poema = (
 )
 
 
+def _print(alinea: str) -> None:
+    print(f"{10 * '-'} {alinea} {10 * '-'}")
+
+
 def ex1():
-    print(f"{10 * '-'} 1a {10 * '-'}")
+    _print("1")
+    _print("a")
     lista_versos = poema.split(' / ')
     [print(verso) for verso in lista_versos]
 
-    print(f"{10 * '-'} 1b {10 * '-'}")
+    _print("b")
     lista_versos += [
         'Por isso eu fiz um samba bem pra frente',
         'Dizendo realmente o que é que eu acho',
         'Isso me deixa triste e cabisbaixo'
     ]
 
-    print(f"{10 * '-'} 1c {10 * '-'}")
+    _print("c")
     print(lista_versos[-2])
     print(lista_versos[-1])
 
-    print(f"{10 * '-'} 1d {10 * '-'}")
+    _print("d")
     numero_versos_com_samba = 0
     for verso in lista_versos:
         if 'samba' in verso:
             numero_versos_com_samba += 1
     print('numero de versos com a palavra "samba":', numero_versos_com_samba)
 
-    print(f"{10 * '-'} 1e {10 * '-'}")
+    _print("e")
     for vogal in ['a', 'e', 'i', 'o', 'u']:
         conta = 0
         for verso in lista_versos:
