@@ -3,7 +3,7 @@ from typing import List
 
 
 def _print(alinea: str) -> None:
-    print(f'{10 * '-'} {alinea} {10 * '-'}')
+    print(f'{10 * "-"} {alinea} {10 * "-"}')
 
 
 def ex4():

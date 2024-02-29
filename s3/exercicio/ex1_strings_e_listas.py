@@ -18,10 +18,10 @@ poema = (
 
 
 def _print(alinea: str) -> None:
-    print(f'{10 * '-'} {alinea} {10 * '-'}')
+    print(f'{10 * "-"} {alinea} {10 * "-"}')
 
 
-def ex1():
+def ex1() -> None:
     _print('1')
     _print('a')
     lista_versos = poema.split(' / ')
@@ -33,26 +33,23 @@ def ex1():
         'Dizendo realmente o que é que eu acho',
         'Isso me deixa triste e cabisbaixo'
     ]
+    [print(verso) for verso in lista_versos]
 
     _print('c')
     print(lista_versos[-2])
     print(lista_versos[-1])
 
     _print('d')
-    numero_versos_com_samba = 0
+    count = 0
     for verso in lista_versos:
         if 'samba' in verso:
-            numero_versos_com_samba += 1
-    print('numero de versos com a palavra "samba":', numero_versos_com_samba)
+            count += 1
+    print('Número de versos com a palavra "samba":', count)
 
     _print('e')
     for vogal in ['a', 'e', 'i', 'o', 'u']:
-        conta = 0
-        for verso in lista_versos:
-            if vogal in verso:
-                conta += verso.lower().count(vogal)
-
-        print(vogal, ':', conta)
+        total = sum(verso.lower().count(vogal) for verso in lista_versos if vogal in verso)
+        print(vogal, ':', total)
 
 
 if __name__ == '__main__':
