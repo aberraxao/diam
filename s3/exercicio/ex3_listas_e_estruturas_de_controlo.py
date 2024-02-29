@@ -2,7 +2,7 @@ from typing import List
 
 
 def _print(alinea: str) -> None:
-    print(f'{10 * '-'} {alinea} {10 * '-'}')
+    print(f'{10 * "-"} {alinea} {10 * "-"}')
 
 
 def ex3():
@@ -13,14 +13,14 @@ def ex3():
     print('lista desordenada:', lista_desordenada)
 
     lista_ordenada = selection_sort(lista_desordenada)
-    print('lista ordenadas:', lista_ordenada)
+    print('lista ordenada:', lista_ordenada)
 
     _print('b')
     lista_desordenada = [7, 4, 5, 9, 8, 2, 1, 3, 6, 10]
     print('lista desordenada:', lista_desordenada)
 
     lista_ordenada = selection_sort_pythonica(lista_desordenada)
-    print('lista ordenadas:', lista_ordenada)
+    print('lista ordenada:', lista_ordenada)
 
 
 def selection_sort(lista: list) -> List[int]:
