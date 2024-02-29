@@ -2,7 +2,7 @@ from typing import Dict, List
 
 
 def _print(alinea: str) -> None:
-    print(f'{10 * '-'} {alinea} {10 * '-'}')
+    print(f'{10 * "-"} {alinea} {10 * "-"}')
 
 
 def ex2():
@@ -28,7 +28,7 @@ def ex2():
     _print('e')
     print('ordenado:', dict(sorted(disciplinas_3ano.items())))
 
-    _print('f')
+    _print('f') # VOU AQUI
     existe_disciplina(disciplinas_3ano, 'DIAM')
     existe_disciplina(disciplinas_3ano, 'FRC')
 
