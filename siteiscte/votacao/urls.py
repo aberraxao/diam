@@ -1,6 +1,6 @@
-from django.urls import path
-from . import views
+from django.urls import include, path
+from . import views  # (. significa que importa views da mesma directoria)
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path("", views.index, name="index"),
 ]
