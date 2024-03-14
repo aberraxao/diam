@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Página Principal</title>
+</head>
+<body>
+    <h1> Lista de questões na BD</h1>
+        {% if latest_question_list %}
+        <ul>
+             {% for questao in latest_question_list %}
+             <li>
+                <a href="{% url 'votacao:detalhe' questao.id %}">
+                    {{ questao.questao_texto }}
+                </a>
+             </li>
+             {% endfor %}
+        </ul>
+        {% else %}
+        <p>Nao ha questoes disponiveis.</p>
+        {% endif %}
+        <a href="{% url 'votacao:criar_questao' %}">
+        Criar nova questão
+        </a>
+</body>
+</html>
+
+
+
+
