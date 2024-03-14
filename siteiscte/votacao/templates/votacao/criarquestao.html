@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar questao</title>
+</head>
+<body>
+    <form action="{% url 'votacao:criar_questao' %}"
+      method="post">
+    {% csrf_token %}
+
+    <label for="novaQuestao">
+        Criar nova questão:
+    </label>
+    <input id="novaQuestao" name="questaoNova"
+           type="text"
+           value="{{ questao }}"/>
+    <br/>
+    <br/>
+    <input type="submit" value="Gravar nova Questão"/>
+</form>
+
+</body>
+</html>
+
