@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h1>{{ questao.questao_texto }}</h1>
+    {% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+        <form action="{% url 'votacao:criar_opcao' questao.id %}"
+              method="post">
+            {% csrf_token %}
+
+            <label for="opcao">
+                Inserir nova opção
+            </label>
+            <input id="opcao" name="novaOpcao"
+                   type="text"
+                   value="{{ novaOpcao }}"/>
+            <br/>
+            <br/>
+
+            <input type="submit" value="Gravar nova opção"/>
+        </form>
+
+</body>
+</html>
