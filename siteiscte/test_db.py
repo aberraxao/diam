@@ -93,7 +93,7 @@ then = timezone.now() - timedelta(days=365 * 10)  # 10 years ago
 q = Questao.objects.get(questao_texto__startswith="Quest")
 q.pub_data = then
 q.save()
-recent_questions(3) # we changed the "pub_data" field before
+recent_questions(3)  # we changed the "pub_data" field before
 
 # alínea e)
 print("\nalínea e) Calcular e mostrar o número total de votos que estão registados na base de dados.\n")
@@ -103,4 +103,3 @@ print(count_votes())
 print("\nalínea f) Percorrer todas as questões da DB e, para cada uma, mostrar o texto da questão \
 e o da opção que tiver mais votos.\n")
 more_votes()
-

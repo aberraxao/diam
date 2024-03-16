@@ -7,11 +7,11 @@ class Questao(models.Model):
     questao_texto = models.CharField(max_length=200)
     pub_data = models.DateTimeField('data de publicacao')
 
-    def foi_publicada_recentemente(self):
-        return self.pub_data >= timezone.now() - datetime.timedelta(days=1)
-
     def __str__(self):
         return self.questao_texto
+
+    def foi_publicada_recentemente(self):
+        return self.pub_data >= timezone.now() - datetime.timedelta(days=1)
 
 
 class Opcao(models.Model):
