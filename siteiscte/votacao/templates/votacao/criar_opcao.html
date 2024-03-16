@@ -5,25 +5,16 @@
     <title>Criar opção</title>
 </head>
 <body>
-
-    <h1>{{ questao.questao_texto }}</h1>
-    {% if error_message %}
-    <p><strong>{{ error_message }}</strong></p>
-    {% endif %}
-        <form action="{% url 'votacao:criaropcao' questao.id %}" method="post">
-            {% csrf_token %}
-
-            <label for="opcao">
-                Inserir nova opção
-            </label>
-            <input id="opcao" name="novaOpcao"
-                   type="text"
-                   value="{{ novaOpcao }}"/>
-            <br/>
-            <br/>
-
-            <input type="submit" value="Gravar nova opção"/>
-        </form>
-
+<h1>{{ questao.questao_texto }}</h1>
+<form method="post">
+    {% csrf_token %}
+    <label for="textbox">Texto da nova opção:</label>
+    <input type="text" id="novaopcao" name="novaopcao" size="60">
+    <br>
+    <br>
+    <button type="submit">Gravar nova opção</button>
+    <br><br>
+    <button type="submit" formaction="{% url 'votacao:detalhe' questao.id %}" onclick="location.reload()">Voltar à questão</button>
+</form>
 </body>
 </html>

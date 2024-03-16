@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalhe</title>
-
 </head>
 <body>
-
     <h1>{{ questao.questao_texto }}</h1>
     {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>
@@ -14,21 +12,17 @@
     <form method="post">
         {% csrf_token %}
         {% for opcao in questao.opcao_set.all %}
-            <input id="opcao{{ forloop.counter }}" name="opcao"
-                   type="radio"
-                   value="{{ opcao.id }}"/>
-            <label for="opcao{{ forloop.counter }}">
-                {{ opcao.opcao_texto }}
-            </label>
+            <input type="radio" name="opcao" id="opcao{{ forloop.counter }}" value="{{ opcao.id }}"/>
+            <label for="opcao{{ forloop.counter }}">{{ opcao.opcao_texto }}</label>
             <br/>
         {% endfor %}
-        <br/>
-        <input type="submit" formaction="{% url 'votacao:voto' questao.id %}" value="Voto"/>
-        <br/><br/>
-        <input type="submit" formaction="{% url 'votacao:criaropcao' questao.id %}" value="Criar nova opção"/>
-        <input type="submit" formaction="{% url 'votacao:removeropcao' questao.id %}" value="Remover opção"/>
-        <br/><br/>
-        <input type="submit" formaction="{% url 'votacao:removerquestao' questao.id %}" value="Remover questão"/>
+        <br>
+        <button type="submit" formaction="{% url 'votacao:voto' questao.id %}">Voto</button>
+        <button type="submit" formaction="{% url 'votacao:index' %}" onclick="location.reload()">Voltar às questões</button>
+        <br><br>
+        <button type="submit" formaction="{% url 'votacao:criaropcao' questao.id %}">Criar nova opção</button>
+        <button type="submit" formaction="{% url 'votacao:apagaropcao' questao.id %}">Apagar opção</button>
+        <button type="submit" formaction="{% url 'votacao:apagarquestao' questao.id %}">Apagar questão</button>
     </form>
 </body>
 </html>
