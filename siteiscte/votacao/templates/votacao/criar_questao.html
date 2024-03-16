@@ -5,7 +5,7 @@
     <title>Criar questão</title>
 </head>
 <body>
-    <form action="{% url 'votacao:criar_questao' %}" method="post">
+    <form action="{% url 'votacao:criarquestao' %}" method="post">
         {% csrf_token %}
 
         <label for="novaQuestao">

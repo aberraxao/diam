@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404, render
-from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.template import loader
+from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.urls import reverse
 
@@ -74,4 +73,25 @@ def criar_opcao(request, questao_id):
         # pois isso impede os dados de serem tratados
         # repetidamente se o utilizador
         # voltar para a página web anterior.
+    return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
+
+
+def remover_questao(request, questao_id):
+    questao = get_object_or_404(Questao, pk=questao_id)
+    questao.delete()
+    return HttpResponseRedirect(reverse('votacao:index', args=()))
+
+
+def remover_opcao(request, questao_id):
+    questao = get_object_or_404(Questao, pk=questao_id)
+    try:
+        opcao_seleccionada = questao.opcao_set.get(pk=request.POST['opcao'])
+    except (KeyError, Opcao.DoesNotExist):
+        return render(
+            request,
+            'votacao/detalhe.html',
+            {'questao': questao, 'error_message': "Não escolheu uma opção", }
+        )
+    else:
+        opcao_seleccionada.delete()
     return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
