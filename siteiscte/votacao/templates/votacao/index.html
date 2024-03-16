@@ -6,22 +6,22 @@
 </head>
 <body>
     <h1> Lista de questões na BD</h1>
-        {% if latest_question_list %}
+    {% if latest_question_list %}
         <ul>
-             {% for questao in latest_question_list %}
-             <li>
-                <a href="{% url 'votacao:detalhe' questao.id %}">
-                    {{ questao.questao_texto }}
-                </a>
-             </li>
-             {% endfor %}
+            {% for questao in latest_question_list %}
+                <li>
+                    <a href="{% url 'votacao:detalhe' questao.id %}">
+                        {{ questao.questao_texto }}
+                    </a>
+                </li>
+            {% endfor %}
         </ul>
-        {% else %}
+    {% else %}
         <p>Nao ha questoes disponiveis.</p>
-        {% endif %}
-        <a href="{% url 'votacao:criar_questao' %}">
+    {% endif %}
+    <a href="{% url 'votacao:criar_questao' %}">
         Criar nova questão
-        </a>
+    </a>
 </body>
 </html>
 

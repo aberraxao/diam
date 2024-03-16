@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Criar opção</title>
 </head>
 <body>
 
@@ -10,7 +10,7 @@
     {% if error_message %}
     <p><strong>{{ error_message }}</strong></p>
     {% endif %}
-        <form action="{% url 'votacao:criar_opcao' questao.id %}"
+        <form action="{% url 'votacao:criaropcao' questao.id %}"
               method="post">
             {% csrf_token %}
 
