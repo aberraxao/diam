@@ -18,7 +18,7 @@
         {% endfor %}
         <br>
         <button type="submit" formaction="{% url 'votacao:voto' questao.id %}">Voto</button>
-        <button type="submit" formaction="{% url 'votacao:index' %}" onclick="location.reload()">Voltar às questões</button>
+        <button type="submit" formaction="{% url 'votacao:index' %}">Voltar às questões</button>
         <br><br>
         <button type="submit" formaction="{% url 'votacao:criaropcao' questao.id %}">Criar nova opção</button>
         <button type="submit" formaction="{% url 'votacao:apagaropcao' questao.id %}">Apagar opção</button>

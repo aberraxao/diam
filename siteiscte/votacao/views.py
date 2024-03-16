@@ -18,7 +18,7 @@ def criarquestao(request):
     questao_texto = request.POST.get('novaquestao')
     if questao_texto:
         Questao(questao_texto=questao_texto, pub_data=timezone.now()).save()
-    return render(request, 'votacao/criar_questao.html')
+    return render(request, 'votacao/criarquestao.html')
 
 
 @require_http_methods(["POST"])
@@ -27,7 +27,7 @@ def criaropcao(request, questao_id):
     opcao_texto = request.POST.get('novaopcao')
     if opcao_texto:
         questao.opcao_set.create(opcao_texto=opcao_texto, votos=0).save()
-    return render(request, 'votacao/criar_opcao.html', {'questao': questao})
+    return render(request, 'votacao/criaropcao.html', {'questao': questao})
 
 
 @require_http_methods(["POST"])
@@ -49,7 +49,7 @@ def apagaropcao(request, questao_id):
 def apagarquestao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     questao.delete()
-    return render(request, 'votacao/apagar_questao.html', {'questao': questao})
+    return render(request, 'votacao/apagarquestao.html', {'questao': questao})
 
 
 def detalhe(request, questao_id):
