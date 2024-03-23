@@ -8,6 +8,7 @@ python3 manage.py runserver
 Iniciar a consola do python com o django e correr o script 'test_db.pt'
 ```shell
 python3 manage.py shell
+
 exec(open('test_db.py', encoding='utf-8').read())
 ```
 
@@ -26,3 +27,18 @@ Para ver o query que a migração vai executar
 python3 manage.py sqlmigrate  <app_name> <migration_file_name>
 ```
 
+Criação de um administrador (superuser) na linha de comandos
+```shell
+python3 manage.py createsuperuser --username=tony --email=antonio@iscte.pt
+```
+```
+
+Criação de utilizadores normais através de comandos na shell
+```shell
+python3 manage.py shell
+
+exec(open('create_users.py', encoding='utf-8').read())
+```
+
+Página de admin
+http://127.0.0.1:8000/admin
