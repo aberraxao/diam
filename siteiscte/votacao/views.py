@@ -15,10 +15,12 @@ def index(request):
 
 @require_http_methods(["POST"])
 def criarquestao(request):
-    questao_texto = request.POST.get('novaquestao')
-    if questao_texto:
-        Questao(questao_texto=questao_texto, pub_data=timezone.now()).save()
-    return render(request, 'votacao/criarquestao.html')
+    if request.user.is_authenticated:
+        questao_texto = request.POST.get('novaquestao')
+        if questao_texto:
+            Questao(questao_texto=questao_texto, pub_data=timezone.now()).save()
+        return render(request, 'votacao/criarquestao.html')
+    return HttpResponseRedirect(reverse('user:home'))
 
 
 @require_http_methods(["POST"])
@@ -47,9 +49,11 @@ def apagaropcao(request, questao_id):
 
 
 def apagarquestao(request, questao_id):
-    questao = get_object_or_404(Questao, pk=questao_id)
-    questao.delete()
-    return render(request, 'votacao/apagarquestao.html', {'questao': questao})
+    if request.user.is_authenticated:
+        questao = get_object_or_404(Questao, pk=questao_id)
+        questao.delete()
+        return render(request, 'votacao/apagarquestao.html', {'questao': questao})
+    return HttpResponseRedirect(reverse('user:home'))
 
 
 def detalhe(request, questao_id):
