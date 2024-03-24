@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Página de votação</title>
-</head>
-<body>
+{% extends 'user/hello.html' %}
+
+{% block title %}Página de votação{% endblock %}
+
+{% block content %}
     <form method="post">
-    {% csrf_token %}
+        {% csrf_token %}
         {% if latest_question_list %}
             <h1>Lista de questões disponíveis</h1>
             <ul>
@@ -21,5 +19,4 @@
         {% endif %}
         <button type="submit" formaction="/votacao/criarquestao">Criar nova questão</button>
     </form>
-</body>
-</html>
+{% endblock %}

@@ -63,18 +63,20 @@ def detalhe(request, questao_id):
 
 @require_http_methods(["POST"])
 def voto(request, questao_id):
-    questao = get_object_or_404(Questao, pk=questao_id)
-    try:
-        opcao_seleccionada = questao.opcao_set.get(pk=request.POST['opcao'])
-    except (KeyError, Opcao.DoesNotExist):
-        return render(request, 'votacao/detalhe.html', {
-            'questao': questao,
-            'error_message': "Não escolheu uma opção",
-        })
-    else:
-        opcao_seleccionada.votos += 1
-        opcao_seleccionada.save()
-    return HttpResponseRedirect(reverse('votacao:resultados', args=(questao.id,)))
+    if request.user.is_authenticated:
+        questao = get_object_or_404(Questao, pk=questao_id)
+        try:
+            opcao_seleccionada = questao.opcao_set.get(pk=request.POST['opcao'])
+        except (KeyError, Opcao.DoesNotExist):
+            return render(request, 'votacao/detalhe.html', {
+                'questao': questao,
+                'error_message': "Não escolheu uma opção",
+            })
+        else:
+            opcao_seleccionada.votos += 1
+            opcao_seleccionada.save()
+        return HttpResponseRedirect(reverse('votacao:resultados', args=(questao.id,)))
+    return HttpResponseRedirect(reverse('user:home'))
 
 
 def resultados(request, questao_id):

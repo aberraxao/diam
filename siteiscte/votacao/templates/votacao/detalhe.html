@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalhe</title>
-</head>
-<body>
+{% extends 'user/hello.html' %}
+
+{% block title %}Detalhe{% endblock %}
+
+{% block content %}
     <h1>{{ questao.questao_texto }}</h1>
     {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>
@@ -24,5 +22,4 @@
         <button type="submit" formaction="{% url 'votacao:apagaropcao' questao.id %}">Apagar opção</button>
         <button type="submit" formaction="{% url 'votacao:apagarquestao' questao.id %}">Apagar questão</button>
     </form>
-</body>
-</html>
+{% endblock %}

@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Apagar questão</title>
-</head>
-<body>
+{% extends 'user/hello.html' %}
+
+{% block title %}Apagar questão{% endblock %}
+
+{% block content %}
     <h1>{{ questao.questao_texto }}</h1>
     <h3>Questão apagada!</h3>
     <form>
         <button type="submit" formaction="{% url 'votacao:index' %}">Voltar às questões</button>
     </form>
-</body>
-</html>
+{% endblock %}

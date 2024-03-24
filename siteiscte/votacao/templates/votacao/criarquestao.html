@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Criar questão</title>
-</head>
-<body>
+{% extends 'user/hello.html' %}
+
+{% block title %}Criar questão{% endblock %}
+
+{% block content %}
     <form method="post">
         {% csrf_token %}
         <label for="novaquestao">Texto da nova questão:</label>
@@ -15,5 +13,4 @@
         <br><br>
         <button type="submit" formaction="{% url 'votacao:index' %}">Voltar às questões</button>
     </form>
-</body>
-</html>
+{% endblock %}

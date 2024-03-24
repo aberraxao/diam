@@ -31,7 +31,7 @@ Criação de um administrador (superuser) na linha de comandos
 ```shell
 python3 manage.py createsuperuser --username=tony --email=antonio@iscte.pt
 ```
-```
+
 
 Criação de utilizadores normais através de comandos na shell
 ```shell

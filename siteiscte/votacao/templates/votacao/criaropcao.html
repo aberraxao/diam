@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Criar opção</title>
-</head>
-<body>
+{% extends 'user/hello.html' %}
+
+{% block title %}Criar opção{% endblock %}
+
+{% block content %}
     <h1>{{ questao.questao_texto }}</h1>
     <form method="post">
         {% csrf_token %}
@@ -16,5 +14,4 @@
         <br><br>
         <button type="submit" formaction="{% url 'votacao:detalhe' questao.id %}">Voltar à questão</button>
     </form>
-</body>
-</html>
+{% endblock %}
