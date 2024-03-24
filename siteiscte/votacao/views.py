@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
 from django.db.models import Count
@@ -153,7 +155,7 @@ def detalhe(request, questao_id):
 
 
 @require_http_methods(['POST'])
-def votar(request, questao_id):
+def voto(request, questao_id):
     if not request.user.is_authenticated:
         return render(request, template_name='user/login.html')
 
@@ -171,6 +173,22 @@ def votar(request, questao_id):
                 'questao': questao,
                 'error_message': 'Só pode votar uma vez em cada opção',
             })
+
+        user_groups = list(request.user.groups.all().values_list('name', flat=True))
+
+        if not user_groups:
+            return render(request, 'votacao/detalhe.html', {
+                'questao': questao,
+                'error_message': 'Não pertence a um grupo votante',
+            })
+
+        max_votes = int(max([char[-1] for char in user_groups])) + 5
+        if count_votes(request) >= max_votes:
+            return render(request, 'votacao/detalhe.html', {
+                'questao': questao,
+                'error_message': 'Limite de votos atingido',
+            })
+
         opcao.user.add(request.user)
         request.session['VOTOS'] = count_votes(request)
         return HttpResponseRedirect(reverse('votacao:resultados', args=(questao.id,)))

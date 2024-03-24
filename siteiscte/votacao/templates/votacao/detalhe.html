@@ -15,7 +15,7 @@
             <br/>
         {% endfor %}
         <br>
-        <button type="submit" formmethod="post" formaction="{% url 'votacao:votar' questao.id %}">Voto
+        <button type="submit" formmethod="post" formaction="{% url 'votacao:voto' questao.id %}">Voto
         </button>
         <button type="submit" formmethod="get" formaction="{% url 'votacao:index' %}">Voltar às questões</button>
         <br><br>
