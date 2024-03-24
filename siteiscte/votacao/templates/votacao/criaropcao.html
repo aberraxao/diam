@@ -1,20 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Criar opção</title>
-</head>
-<body>
+{% extends 'user/hello.html' %}
+
+{% block title %}Criar opção{% endblock %}
+
+{% block content %}
+    {% if request.user.is_superuser %}
     <h1>{{ questao.questao_texto }}</h1>
-    <form method="post">
+    <form>
         {% csrf_token %}
         <label for="novaopcao">Texto da nova opção:</label>
         <input type="text" id="novaopcao" name="novaopcao" size="60">
         <br>
         <br>
-        <button type="submit">Gravar nova opção</button>
+        <button type="submit" formmethod="post">Gravar nova opção</button>
         <br><br>
-        <button type="submit" formaction="{% url 'votacao:detalhe' questao.id %}">Voltar à questão</button>
+        <button type="submit" formmethod="get" formaction="{% url 'votacao:detalhe' questao.id %}">Voltar à questão</button>
     </form>
-</body>
-</html>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'user/hello.html' %}
+
+{% block title %}Informação pessoal{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <h1>Olá {{ request.session.FULL_NAME }}!</h1>
+        <ul>
+            <li>Username -- {{ request.session.USERNAME }}</li>
+            <li>E-mail -- {{ request.session.EMAIL }}</li>
+            <li>Curso -- {{ request.session.CURSO }}</li>
+        </ul>
+        <br>
+    {% else %}
+        <h1>Olá utilizador anónimo!</h1>
+    {% endif %}
+    <br>
+    <form>
+        <button type="submit" formaction="{% url 'votacao:index' %}">Voltar à página inicial</button>
+    </form>
+
+{% endblock %}
