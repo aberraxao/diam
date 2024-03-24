@@ -12,12 +12,13 @@ def create_sample_users():
         password = "pass"
         curso = "LEI-PL"
 
-        if Aluno.objects.filter(username=name).exists():
-            Aluno.objects.filter(username=name).update(email=mail, password=make_password(password), curso=curso)
-        elif User.objects.filter(username=name).exists():
-            User.objects.filter(username=name).update(email=mail, password=make_password(password))
+        if User.objects.filter(username=name).exists():
+            user = User.objects.filter(username=name)
+            user.update(email=mail, password=make_password(password))
+            Aluno.objects.update_or_create(user=user.first(), curso=curso)
         else:
-            Aluno.objects.create_user(name, mail, password)
+            user = User.objects.create_user(name, mail, password)
+            Aluno.objects.create(user=user, curso=curso)
 
 
 create_sample_users()

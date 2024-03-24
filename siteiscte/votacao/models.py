@@ -4,8 +4,12 @@ from django.utils import timezone
 import datetime
 
 
-class Aluno(User):
-    curso = models.CharField(max_length=50)
+class Aluno(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    curso = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.user.get_full_name()
 
 
 class Questao(models.Model):
