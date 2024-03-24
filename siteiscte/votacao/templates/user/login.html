@@ -9,7 +9,7 @@
         <h1>Olá {{ request.user.username }}!</h1>
     {% else %}
         <h1>Login</h1>
-        <form method="POST" action="{% url 'user:login' %}">
+        <form method="POST" action="{% url 'votacao:login' %}">
             {% csrf_token %}
             <label for="username">Username: </label><input type="text" id="username" name="username" size="40"/>
             <br><br>
@@ -20,7 +20,7 @@
                 {% else %}
                     Não tem conta? 
                 {% endif %}
-                <a href="{% url 'user:register' %}">Registe aqui</a>
+                <a href="{% url 'votacao:register' %}">Registe aqui</a>
             </small></p>
             <br>
             <input type="submit" value="Login"/>
