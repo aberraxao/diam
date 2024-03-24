@@ -23,7 +23,8 @@
             <br><br>
             <label for="email">E-mail: </label><input type="email" required id="email" name="email" size="40"/>
             <br><br>
-            <label for="curso">Curso: </label><input type="text" id="curso" name="curso" size="40"/>
+            <label for="curso">Curso: </label><input type="text" id="curso" name="curso" size="20"/>
+            <label for="grupo">Grupo: </label><input type="number" min="1" id="grupo" name="grupo" size="20"/>
             <p><small>
                 {% if error_message %}
                     <strong>{{ error_message }}. </strong>

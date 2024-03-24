@@ -3,14 +3,17 @@
 {% block title %}Criar questão{% endblock %}
 
 {% block content %}
-    <form>
-        {% csrf_token %}
-        <label for="novaquestao">Texto da nova questão:</label>
-        <input type="text" id="novaquestao" name="novaquestao" size="60"/>
-        <br>
-        <br>
-        <button type="submit" formmethod="post" formaction="{% url 'votacao:criarquestao' %}">Gravar nova questão</button>
-        <br><br>
-        <button type="submit" formmethod="get" formaction="{% url 'votacao:index' %}">Voltar às questões</button>
-    </form>
+    {% if request.user.is_superuser %}
+        <form>
+            {% csrf_token %}
+            <label for="novaquestao">Texto da nova questão:</label>
+            <input type="text" id="novaquestao" name="novaquestao" size="60"/>
+            <br>
+            <br>
+            <button type="submit" formmethod="post" formaction="{% url 'votacao:criarquestao' %}">Gravar nova questão
+            </button>
+            <br><br>
+            <button type="submit" formmethod="get" formaction="{% url 'votacao:index' %}">Voltar às questões</button>
+        </form>
+    {% endif %}
 {% endblock %}

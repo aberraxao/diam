@@ -15,18 +15,18 @@
             <br/>
         {% endfor %}
         <br>
-        <button type="submit" formmethod="post" formaction="{% url 'votacao:votar_apagar_opcao' questao.id %}">Voto
+        <button type="submit" formmethod="post" formaction="{% url 'votacao:votar' questao.id %}">Voto
         </button>
         <button type="submit" formmethod="get" formaction="{% url 'votacao:index' %}">Voltar às questões</button>
         <br><br>
-        <button type="submit" formmethod="get" formaction="{% url 'votacao:criaropcao' questao.id %}">
-            Criar nova opção
+        <button type="submit" formmethod="get" name="_method" value="create_opcao"
+                formaction="{% url 'votacao:detalhe' questao.id %}">Criar nova opção
         </button>
-        <button type="submit" formmethod="post" name="_method" value="delete"
-                formaction="{% url 'votacao:votar_apagar_opcao' questao.id %}">Apagar opção
+        <button type="submit" formmethod="post" name="_method" value="delete_opcao"
+                formaction="{% url 'votacao:detalhe' questao.id %}">Apagar opção
         </button>
-        <button type="submit" formmethod="post" formaction="{% url 'votacao:apagarquestao' questao.id %}">
-            Apagar questão
+        <button type="submit" formmethod="post" name="_method" value="delete_questao"
+                formaction="{% url 'votacao:detalhe' questao.id %}">Apagar questão
         </button>
     </form>
 {% endblock %}

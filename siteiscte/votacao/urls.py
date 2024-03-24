@@ -13,8 +13,6 @@ urlpatterns = [
     path('informacao', TemplateView.as_view(template_name='user/informacao.html'), name='informacao'),
     path('<int:questao_id>', views.detalhe, name='detalhe'),
     path('<int:questao_id>/resultados', views.resultados, name='resultados'),
-    path('<int:questao_id>/voto', views.votar_apagar_opcao, name='votar_apagar_opcao'),
+    path('<int:questao_id>/voto', views.votar, name='votar'),
     path('criarquestao', views.criarquestao, name='criarquestao'),
-    path('<int:questao_id>/criaropcao', views.criaropcao, name='criaropcao'),
-    path('<int:questao_id>/apagarquestao', views.apagarquestao, name='apagarquestao'),
 ]

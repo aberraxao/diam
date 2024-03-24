@@ -3,6 +3,7 @@
 {% block title %}Criar opção{% endblock %}
 
 {% block content %}
+    {% if request.user.is_superuser %}
     <h1>{{ questao.questao_texto }}</h1>
     <form>
         {% csrf_token %}
@@ -14,4 +15,5 @@
         <br><br>
         <button type="submit" formmethod="get" formaction="{% url 'votacao:detalhe' questao.id %}">Voltar à questão</button>
     </form>
+    {% endif %}
 {% endblock %}

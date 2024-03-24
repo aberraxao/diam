@@ -6,6 +6,9 @@
     <form>
         {% if latest_question_list %}
             <h1>Lista de questões disponíveis</h1>
+            {% if error_message %}
+                <p><strong>{{ error_message }}</strong></p>
+            {% endif %}
             <ul>
                 {% for questao in latest_question_list %}
                     <li>
@@ -16,6 +19,8 @@
         {% else %}
             <h1>Não há questões disponíveis.</h1>
         {% endif %}
-        <button type="submit" formmethod="get" formaction="/votacao/criarquestao">Criar nova questão</button>
+        <button type="submit" formmethod="get" name="_method" value="create_questao"
+                formaction="{% url 'votacao:index' %}">Criar nova questão
+        </button>
     </form>
 {% endblock %}
