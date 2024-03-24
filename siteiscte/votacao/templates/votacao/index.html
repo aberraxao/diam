@@ -4,6 +4,7 @@
 
 {% block content %}
     <form>
+        {% csrf_token %}
         {% if latest_question_list %}
             <h1>Lista de questões disponíveis</h1>
             {% if error_message %}

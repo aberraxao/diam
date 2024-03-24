@@ -1,5 +1,3 @@
-import re
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
 from django.db.models import Count
