@@ -32,13 +32,5 @@ Criação de um administrador (superuser) na linha de comandos
 python3 manage.py createsuperuser --username=tony --email=antonio@iscte.pt
 ```
 
-
-Criação de utilizadores normais através de comandos na shell
-```shell
-python3 manage.py shell
-
-exec(open('create_users.py', encoding='utf-8').read())
-```
-
 Página de admin
 http://127.0.0.1:8000/admin
