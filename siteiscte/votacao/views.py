@@ -12,16 +12,13 @@ from django.urls import reverse
 
 @require_http_methods(["POST"])
 def count_votes(request) -> int:
-    return Votos.objects.filter.aggregate(sum_votos=Sum("votos", default=0)).get("sum_votos")
-
-
-def render_not_authenticated(request):
-    if request.user.is_authenticated:
-        return render(request, template_name='user/login.html')
+    return request.user.opcao_set.count()
 
 
 def index(request):
-    render_not_authenticated(request)
+    if not request.user.is_authenticated:
+        return render(request, template_name='user/login.html')
+
     latest_question_list = Questao.objects.order_by('-pub_data')[:10]
     context = {
         'latest_question_list': latest_question_list,
@@ -47,6 +44,13 @@ def loginview(request):
             return render(request, 'user/login.html', {'error_message': "Password errada"})
 
         login(request, user)
+        request.session['USERNAME'] = user.username
+        request.session['EMAIL'] = user.email
+        request.session['FULL_NAME'] = user.get_full_name()
+        aluno = Aluno.objects.filter(user__username=request.user.username).first()
+        request.session['CURSO'] = aluno.curso if aluno else 'Não inscrito'
+        request.session['VOTOS'] = count_votes(request)
+
         return HttpResponseRedirect(reverse('votacao:index'))
 
     return render(request, 'user/login.html')
@@ -83,18 +87,10 @@ def register(request):
     return render(request, 'user/register.html')
 
 
-def informacao(request):
-    render_not_authenticated(request)
-
-    user = Aluno.objects.filter(user__username=request.user.username).first()
-    curso = user.curso if user else ''
-
-    return render(request, 'user/informacao.html', {'curso': curso})
-
-
 @require_http_methods(["GET", "POST"])
 def criarquestao(request):
-    render_not_authenticated(request)
+    if not request.user.is_authenticated:
+        return render(request, template_name='user/login.html')
 
     if request.method == "POST":
         questao_texto = request.POST.get('novaquestao')
@@ -105,7 +101,8 @@ def criarquestao(request):
 
 @require_http_methods(["GET", "POST"])
 def criaropcao(request, questao_id):
-    render_not_authenticated(request)
+    if not request.user.is_authenticated:
+        return render(request, template_name='user/login.html')
 
     questao = get_object_or_404(Questao, pk=questao_id)
 
@@ -118,16 +115,19 @@ def criaropcao(request, questao_id):
 
 
 def apagarquestao(request, questao_id):
-    render_not_authenticated(request)
+    if not request.user.is_authenticated:
+        return render(request, template_name='user/login.html')
 
     questao = get_object_or_404(Questao, pk=questao_id)
     questao.delete()
+    request.session['VOTOS'] = count_votes(request)
 
     return HttpResponseRedirect(reverse('votacao:index'))
 
 
 def detalhe(request, questao_id):
-    render_not_authenticated(request)
+    if not request.user.is_authenticated:
+        return render(request, template_name='user/login.html')
 
     questao = get_object_or_404(Questao, pk=questao_id)
 
@@ -136,7 +136,8 @@ def detalhe(request, questao_id):
 
 @require_http_methods(["POST"])
 def votar_apagar_opcao(request, questao_id):
-    render_not_authenticated(request)
+    if not request.user.is_authenticated:
+        return render(request, template_name='user/login.html')
 
     questao = get_object_or_404(Questao, pk=questao_id)
     try:
@@ -149,19 +150,23 @@ def votar_apagar_opcao(request, questao_id):
     else:
         if request.POST.get('_method', '') == 'delete':
             opcao.delete()
+            request.session['VOTOS'] = count_votes(request)
             return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
+
         if opcao.user.filter(username=request.user).exists():
             return render(request, 'votacao/detalhe.html', {
                 'questao': questao,
                 'error_message': "Só pode votar uma vez em cada opção",
             })
         opcao.user.add(request.user)
+        request.session['VOTOS'] = count_votes(request)
         return HttpResponseRedirect(reverse('votacao:resultados', args=(questao.id,)))
 
 
 @require_http_methods(["GET"])
 def resultados(request, questao_id):
-    render_not_authenticated(request)
+    if not request.user.is_authenticated:
+        return render(request, template_name='user/login.html')
 
     questao = get_object_or_404(Questao, pk=questao_id)
     opcoes = get_object_or_404(Questao, pk=questao_id).opcao_set.annotate(count=Count('user'))

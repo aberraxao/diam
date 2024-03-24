@@ -4,11 +4,11 @@
 
 {% block content %}
     {% if request.user.is_authenticated %}
-        <h1>Olá {{ request.user.get_full_name }}!</h1>
+        <h1>Olá {{ request.session.FULL_NAME }}!</h1>
         <ul>
-            <li>Username -- {{ request.user.username }}</li>
-            <li>E-mail -- {{ request.user.email }}</li>
-            <li>Curso -- {{ curso }}</li>
+            <li>Username -- {{ request.session.USERNAME }}</li>
+            <li>E-mail -- {{ request.session.EMAIL }}</li>
+            <li>Curso -- {{ request.session.CURSO }}</li>
         </ul>
         <br>
     {% else %}
