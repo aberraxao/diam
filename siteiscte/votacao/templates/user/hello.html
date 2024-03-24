@@ -8,7 +8,7 @@
     <header style="float: right">
         <form>
             {% if request.user.is_authenticated %}
-                <a href="{% url 'votacao:informacao' %}">Olá {{ request.user.username }}</a> 
+                <a href="{% url 'votacao:informacao' %}">Olá {{ request.user.username }}</a>
                 <button type="submit" formaction="{% url 'votacao:logout' %}">Logout</button>
             {% else %}
                 <button type="submit" formaction="{% url 'votacao:login' %}">Login</button>

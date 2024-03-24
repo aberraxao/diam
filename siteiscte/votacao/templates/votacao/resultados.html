@@ -3,13 +3,16 @@
 {% block title %}Resultados{% endblock %}
 
 {% block content %}
-    <h1>{{ questao.questao_texto }}</h1>
-    <ul>
-        {% for opcao in questao.opcao_set.all %}
-            <li>{{ opcao.opcao_texto }} -- {{ opcao.votos }} voto{{ opcao.votos|pluralize }}</li>
-        {% endfor %}
-    </ul>
-    <br>
-    <button type="submit" formaction="{% url 'votacao:detalhe' questao.id %}">Votar novamente</button>
-    <button type="submit" formaction="{% url 'votacao:detalhe' questao.id %}">Voltar à questão</button>
+    <form>
+        {% csrf_token %}
+        <h1>{{ questao.questao_texto }}</h1>
+        <ul>
+            {% for opcao in opcoes %}
+                <li>{{ opcao.opcao_texto }} -- {{ opcao.count }} voto{{ opcao.count|pluralize }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <button type="submit" formmethod="get" formaction="{% url 'votacao:detalhe' questao.id %}">Voltar à questão
+        </button>
+    </form>
 {% endblock %}

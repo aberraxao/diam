@@ -48,17 +48,17 @@ def get_most_voted(q: Questao) -> str:
     return q.opcao_set.order_by('-votos').first()
 
 
-questoes = {"Vamos fazer uma festa no fim do ano?": [["Sim.", 1],
-                                                     ["Não.", 3],
-                                                     ["Talvez.", 15],
+questoes = {"Vamos fazer uma festa no fim do ano?": [["Sim."],
+                                                     ["Não."],
+                                                     ["Talvez."],
                                                      ],
-            "Gostas de gatos?": [["Miauuuu ...", 4],
-                                 ["Adoro.", 2],
-                                 ["Que fofos", 11],
-                                 ["Sim, claro!", 5],
+            "Gostas de gatos?": [["Miauuuu ..."],
+                                 ["Adoro."],
+                                 ["Que fofos"],
+                                 ["Sim, claro!"],
                                  ],
-            "Questão muito antiga: Quo vadis?": [["A todo o lado.", 7],
-                                                 ["Rumo ao infinito.", 2],
+            "Questão muito antiga: Quo vadis?": [["A todo o lado."],
+                                                 ["Rumo ao infinito."],
                                                  ],
             }
 

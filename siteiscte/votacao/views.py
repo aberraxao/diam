@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.utils import timezone
@@ -15,12 +15,19 @@ def count_votes(request) -> int:
     return Votos.objects.filter.aggregate(sum_votos=Sum("votos", default=0)).get("sum_votos")
 
 
-def index(request):
+def render_not_authenticated(request):
     if request.user.is_authenticated:
-        latest_question_list = Questao.objects.order_by('-pub_data')[:10]
-        context = {'latest_question_list': latest_question_list}
-        return render(request, 'votacao/index.html', context)
-    return render(request, template_name='user/login.html')
+        return render(request, template_name='user/login.html')
+
+
+def index(request):
+    render_not_authenticated(request)
+    latest_question_list = Questao.objects.order_by('-pub_data')[:10]
+    context = {
+        'latest_question_list': latest_question_list,
+        'username': request.user.username
+    }
+    return render(request, 'votacao/index.html', context)
 
 
 @require_http_methods(['GET', 'POST'])
@@ -47,7 +54,7 @@ def loginview(request):
 
 def logoutview(request):
     logout(request)
-    return render(request, 'user/login.html')
+    return render(request, template_name='user/login.html')
 
 
 @require_http_methods(['GET', 'POST'])
@@ -77,88 +84,85 @@ def register(request):
 
 
 def informacao(request):
-    if request.user.is_authenticated:
-        user = Aluno.objects.filter(user__username=request.user.username).first()
-        curso = user.curso if user else ''
+    render_not_authenticated(request)
 
-        return render(request, 'user/informacao.html', {'curso': curso})
+    user = Aluno.objects.filter(user__username=request.user.username).first()
+    curso = user.curso if user else ''
 
-    return render(request, 'user/login.html')
+    return render(request, 'user/informacao.html', {'curso': curso})
 
 
-@require_http_methods(["POST"])
+@require_http_methods(["GET", "POST"])
 def criarquestao(request):
-    if request.user.is_authenticated:
+    render_not_authenticated(request)
+
+    if request.method == "POST":
         questao_texto = request.POST.get('novaquestao')
         if questao_texto:
             Questao(questao_texto=questao_texto, pub_data=timezone.now()).save()
-        return render(request, 'votacao/criarquestao.html')
-    return render(request, 'user/login.html')
+    return render(request, 'votacao/criarquestao.html')
 
 
-@require_http_methods(["POST"])
+@require_http_methods(["GET", "POST"])
 def criaropcao(request, questao_id):
-    if request.user.is_authenticated:
-        questao = get_object_or_404(Questao, pk=questao_id)
+    render_not_authenticated(request)
+
+    questao = get_object_or_404(Questao, pk=questao_id)
+
+    if request.method == 'POST':
         opcao_texto = request.POST.get('novaopcao')
         if opcao_texto:
-            questao.opcao_set.create(opcao_texto=opcao_texto, votos=0).save()
-        return render(request, 'votacao/criaropcao.html', {'questao': questao})
-    return render(request, 'user/login.html')
+            questao.opcao_set.create(opcao_texto=opcao_texto).save()
 
-
-@require_http_methods(["POST"])
-def apagaropcao(request, questao_id):
-    if request.user.is_authenticated:
-        questao = get_object_or_404(Questao, pk=questao_id)
-        try:
-            opcao_selecionada = questao.opcao_set.get(pk=request.POST['opcao'])
-        except (KeyError, Opcao.DoesNotExist):
-            return render(
-                request,
-                'votacao/detalhe.html',
-                {'questao': questao, 'error_message': "Não escolheu uma opção", }
-            )
-        else:
-            opcao_selecionada.delete()
-        return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
-    return render(request, 'user/login.html')
+    return render(request, 'votacao/criaropcao.html', {'questao': questao})
 
 
 def apagarquestao(request, questao_id):
-    if request.user.is_authenticated:
-        questao = get_object_or_404(Questao, pk=questao_id)
-        questao.delete()
+    render_not_authenticated(request)
+
+    questao = get_object_or_404(Questao, pk=questao_id)
+    questao.delete()
+
     return HttpResponseRedirect(reverse('votacao:index'))
 
 
 def detalhe(request, questao_id):
-    if request.user.is_authenticated:
-        questao = get_object_or_404(Questao, pk=questao_id)
-        return render(request, 'votacao/detalhe.html', {'questao': questao})
-    return render(request, 'user/login.html')
+    render_not_authenticated(request)
+
+    questao = get_object_or_404(Questao, pk=questao_id)
+
+    return render(request, 'votacao/detalhe.html', {'questao': questao})
 
 
 @require_http_methods(["POST"])
-def voto(request, questao_id):
-    if request.user.is_authenticated:
-        questao = get_object_or_404(Questao, pk=questao_id)
-        try:
-            opcao_seleccionada = questao.opcao_set.get(pk=request.POST['opcao'])
-        except (KeyError, Opcao.DoesNotExist):
+def votar_apagar_opcao(request, questao_id):
+    render_not_authenticated(request)
+
+    questao = get_object_or_404(Questao, pk=questao_id)
+    try:
+        opcao = questao.opcao_set.get(pk=request.POST['opcao'])
+    except (KeyError, Opcao.DoesNotExist):
+        return render(request, 'votacao/detalhe.html', {
+            'questao': questao,
+            'error_message': "Não escolheu uma opção",
+        })
+    else:
+        if request.POST.get('_method', '') == 'delete':
+            opcao.delete()
+            return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
+        if opcao.user.filter(username=request.user).exists():
             return render(request, 'votacao/detalhe.html', {
                 'questao': questao,
-                'error_message': "Não escolheu uma opção",
+                'error_message': "Só pode votar uma vez em cada opção",
             })
-        else:
-            opcao_seleccionada.votos += 1
-            opcao_seleccionada.save()
+        opcao.user.add(request.user)
         return HttpResponseRedirect(reverse('votacao:resultados', args=(questao.id,)))
-    return render(request, 'user/login.html')
 
 
+@require_http_methods(["GET"])
 def resultados(request, questao_id):
-    if request.user.is_authenticated:
-        questao = get_object_or_404(Questao, pk=questao_id)
-        return render(request, 'votacao/resultados.html', {'questao': questao})
-    return render(request, 'user/login.html')
+    render_not_authenticated(request)
+
+    questao = get_object_or_404(Questao, pk=questao_id)
+    opcoes = get_object_or_404(Questao, pk=questao_id).opcao_set.annotate(count=Count('user'))
+    return render(request, 'votacao/resultados.html', {'questao': questao, 'opcoes': opcoes})

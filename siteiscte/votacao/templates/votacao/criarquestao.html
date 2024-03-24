@@ -3,14 +3,14 @@
 {% block title %}Criar questão{% endblock %}
 
 {% block content %}
-    <form method="post">
+    <form>
         {% csrf_token %}
         <label for="novaquestao">Texto da nova questão:</label>
         <input type="text" id="novaquestao" name="novaquestao" size="60"/>
         <br>
         <br>
-        <button type="submit" formaction="{% url 'votacao:criarquestao' %}">Gravar nova questão</button>
+        <button type="submit" formmethod="post" formaction="{% url 'votacao:criarquestao' %}">Gravar nova questão</button>
         <br><br>
-        <button type="submit" formaction="{% url 'votacao:index' %}">Voltar às questões</button>
+        <button type="submit" formmethod="get" formaction="{% url 'votacao:index' %}">Voltar às questões</button>
     </form>
 {% endblock %}
