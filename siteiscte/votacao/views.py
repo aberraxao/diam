@@ -129,8 +129,7 @@ def apagarquestao(request, questao_id):
     if request.user.is_authenticated:
         questao = get_object_or_404(Questao, pk=questao_id)
         questao.delete()
-        return render(request, 'votacao/apagarquestao.html', {'questao': questao})
-    return render(request, 'user/login.html')
+    return HttpResponseRedirect(reverse('votacao:index'))
 
 
 def detalhe(request, questao_id):
