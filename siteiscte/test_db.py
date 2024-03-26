@@ -1,28 +1,38 @@
 from datetime import timedelta
+
+from django.contrib.auth.models import User, Group
+
 from votacao.models import Questao, Opcao
 from django.utils import timezone
 from django.db.models import Sum
 
+from django.contrib.auth.models import User, Group
 
-def delete_all():
-    questoes = Questao.objects.all()
-    for questao in questoes:
-        questao.delete()
+from votacao.models import Aluno
+
+users = ["Maria", "Ana", "Rui", "Rita", "Joao", "Ines"]
+questoes = {"Vamos fazer uma festa no fim do ano?": [["Sim."],
+                                                     ["Não."],
+                                                     ["Talvez."],
+                                                     ],
+            "Gostas de gatos?": [["Miauuuu ..."],
+                                 ["Adoro."],
+                                 ["Que fofos"],
+                                 ["Sim, claro!"],
+                                 ],
+            "Questão muito antiga: Quo vadis?": [["A todo o lado."],
+                                                 ["Rumo ao infinito."],
+                                                 ],
+            }
 
 
-def show_questions():
+def show_questions() -> None:
     for line in Questao.objects.all():
         print(line)
 
 
 def show_options_started_with(text: str) -> None:
     for line in Questao.objects.get(questao_texto__startswith=text).opcao_set.all():
-        print(line)
-
-
-def show_options(start: str, nb: int) -> None:
-    q = Questao.objects.get(questao_texto__startswith=start)
-    for line in q.opcao_set.filter(votos__gt=nb):
         print(line)
 
 
@@ -33,73 +43,57 @@ def recent_questions(years: int) -> None:
         print(line)
 
 
-def count_votes() -> int:
-    return Opcao.objects.aggregate(sum_votos=Sum("votos", default=0)).get("sum_votos")
-
-
-def more_votes() -> None:
-    for questao in Questao.objects.all():
-        print(questao)
-        # get_most_voted(questao)
-        print("Opção mais votada: ", get_most_voted(questao), "\n")
-
-
-def get_most_voted(q: Questao) -> str:
-    return q.opcao_set.order_by('-votos').first()
-
-
-questoes = {"Vamos fazer uma festa no fim do ano?": [["Sim.", 1],
-                                                     ["Não.", 3],
-                                                     ["Talvez.", 15],
-                                                     ],
-            "Gostas de gatos?": [["Miauuuu ...", 4],
-                                 ["Adoro.", 2],
-                                 ["Que fofos", 11],
-                                 ["Sim, claro!", 5],
-                                 ],
-            "Questão muito antiga: Quo vadis?": [["A todo o lado.", 7],
-                                                 ["Rumo ao infinito.", 2],
-                                                 ],
-            }
-
-
-def create_db() -> None:
+def create_questions() -> None:
     for questao, opcoes in questoes.items():
         q = Questao(questao_texto=questao, pub_data=timezone.now())
         q.save()
         for opcao in opcoes:
-            q.opcao_set.create(opcao_texto=opcao[0], votos=opcao[1])
+            q.opcao_set.create(opcao_texto=opcao[0])
+
+
+def create_users() -> None:
+    numero = 0
+    for name in users:
+        numero += 1
+        mail = name.lower() + "@iscte.pt"
+        password = "pass"
+        curso = "LEI-PL"
+
+        if not User.objects.filter(username=name).exists():
+            user = User.objects.create_user(name, mail, password)
+            curso_grupo, _ = Group.objects.get_or_create(name=f"{curso}-{numero}")
+            user.groups.add(curso_grupo)
+            Aluno.objects.create(user=user, curso=curso)
+
+
+def create_superuser() -> None:
+    User.objects.create_superuser(username='admin', email='admin', password='admin')
+
+
+def create_db() -> None:
+    create_superuser()
+    create_users()
+    create_questions()
+
+
+def delete_all() -> None:
+    Questao.objects.all().delete()
+    User.objects.all().delete()
+    Group.objects.all().delete()
 
 
 delete_all()
 create_db()
 
-# alínea a)
 print("\nalínea a) Mostrar uma lista com o texto de todas as questões em BD.\n")
 show_questions()
 
-# alínea b)
 print("\nalínea b) Mostrar as opções da questão em que o texto começa com 'Gostas de...'.\n")
 show_options_started_with("Gostas de")
 
-# alínea c)
-print("\nalínea c) Mostrar as opções com número de votos superior a 2 da questão em que o texto \
-começa com 'Gostas de...'.\n")
-show_options("Gostas de", 2)
-
-# alínea d)
 print("\nalínea d) Mostrar uma lista das questões publicadas nos últimos 3 anos.\n")
 then = timezone.now() - timedelta(days=365 * 10)  # 10 years ago
 q = Questao.objects.get(questao_texto__startswith="Quest")
 q.pub_data = then
 q.save()
-recent_questions(3)  # we changed the "pub_data" field before
-
-# alínea e)
-print("\nalínea e) Calcular e mostrar o número total de votos que estão registados na base de dados.\n")
-print(count_votes())
-
-# alínea f)
-print("\nalínea f) Percorrer todas as questões da DB e, para cada uma, mostrar o texto da questão \
-e o da opção que tiver mais votos.\n")
-more_votes()
+recent_questions(3)
