@@ -1,12 +1,13 @@
-{% extends 'user/hello.html' %}
+{% extends 'votacao/index.html' %}
 
 {% block title %}Criar opção{% endblock %}
 
 {% block content %}
     {% if request.user.is_superuser %}
-    <h1>{{ questao.questao_texto }}</h1>
+    
     <form>
         {% csrf_token %}
+        <h1>{{ questao.questao_texto }}</h1>
         <label for="novaopcao">Texto da nova opção:</label>
         <input type="text" id="novaopcao" name="novaopcao" size="60">
         <br>
