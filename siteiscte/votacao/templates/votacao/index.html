@@ -1,27 +1,68 @@
-{% extends 'user/hello.html' %}
-
-{% block title %}Página de votação{% endblock %}
-
-{% block content %}
-    <form>
-        {% csrf_token %}
-        {% if latest_question_list %}
-            <h1>Lista de questões disponíveis</h1>
-            {% if error_message %}
-                <p><strong>{{ error_message }}</strong></p>
-            {% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'votacao/css/styles.css' %}?{% now "U" %}">
+    <title>{% block title %} Página de votação {% endblock %}</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <section>
+                <h1>O ISCTE e as suas perguntas</h1>
+            </section>
+            <aside>
+                <form>
+                    {% if request.user.is_authenticated %}
+                        Olá {{ request.session.USERNAME }},
+                        já votaste {{ request.session.VOTOS }} {{ request.session.VOTOS|pluralize:"vez,vezes" }}
+                        <button type="submit" formaction="{% url 'votacao:informacao' %}">Perfil</button>
+                        <button type="submit" formaction="{% url 'votacao:logout' %}">Logout</button>
+                    {% else %}
+                        <button type="submit" formaction="{% url 'votacao:login' %}">Login</button>
+                        <button type="submit" formaction="{% url 'votacao:register' %}">Registar</button>
+                    {% endif %}
+                </form>
+            </aside>
+        </div>
+        <div id="banner"></div>
+    </header>
+    <nav>
+        <div class="container">
             <ul>
-                {% for questao in latest_question_list %}
-                    <li>
-                        <a href="{% url 'votacao:detalhe' questao.id %}">{{ questao.questao_texto }}</a>
-                    </li>
-                {% endfor %}
+                <li><a href="#">About</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Contacts</a></li>
             </ul>
-        {% else %}
-            <h1>Não há questões disponíveis.</h1>
-        {% endif %}
-        <button type="submit" formmethod="get" name="_method" value="create_questao"
-                formaction="{% url 'votacao:index' %}">Criar nova questão
-        </button>
-    </form>
-{% endblock %}
+        </div>
+    </nav>
+    <main>
+        <div class="container">
+            {% block content %}
+                <form>
+                    {% csrf_token %}
+                    {% if latest_question_list %}
+                        <h1>Lista de questões disponíveis</h1>
+                        {% if error_message %}
+                            <p><strong>{{ error_message }}</strong></p>
+                        {% endif %}
+                        <ul>
+                            {% for questao in latest_question_list %}
+                                <li>
+                                    <a href="{% url 'votacao:detalhe' questao.id %}">{{ questao.questao_texto }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <h1>Não há questões disponíveis.</h1>
+                    {% endif %}
+                    <button type="submit" formmethod="get" name="_method" value="create_questao"
+                            formaction="{% url 'votacao:index' %}">Criar nova questão
+                    </button>
+                </form>
+            {% endblock %}
+        </div>
+    </main>
+</body>
+</html>
