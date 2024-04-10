@@ -18,7 +18,7 @@ def count_votes(request) -> int:
 @require_http_methods(['GET'])
 def index(request):
     if not request.user.is_authenticated:
-        return render(request, template_name='user/login.html')
+        return render(request, template_name='votacao/login.html')
     context = {}
     if request.GET.get('_method', '') == 'create_questao':
         if request.user.is_superuser:
@@ -43,11 +43,11 @@ def loginview(request):
         password = request.POST['password']
 
         if not User.objects.filter(username=username).exists():
-            return render(request, 'user/login.html', {'error_message': 'Utilizador não encontrado'})
+            return render(request, 'votacao/login.html', {'error_message': 'Utilizador não encontrado'})
 
         user = authenticate(username=username, password=password)
         if user is None:
-            return render(request, 'user/login.html', {'error_message': 'Password errada'})
+            return render(request, 'votacao/login.html', {'error_message': 'Password errada'})
 
         login(request, user)
         request.session['USERNAME'] = user.username
@@ -59,13 +59,13 @@ def loginview(request):
 
         return HttpResponseRedirect(reverse('votacao:index'))
 
-    return render(request, 'user/login.html')
+    return render(request, 'votacao/login.html')
 
 
 @require_http_methods(['GET'])
 def logoutview(request):
     logout(request)
-    return render(request, template_name='user/login.html')
+    return render(request, template_name='votacao/login.html')
 
 
 @require_http_methods(['GET', 'POST'])
@@ -82,9 +82,9 @@ def register(request):
         curso = request.POST.get('curso', '')
         grupo = request.POST.get('grupo', '')
         if not (username or email or password):
-            return render(request, 'user/login.html', {'error_message': 'Preencher campos obrigatórios'})
+            return render(request, 'votacao/login.html', {'error_message': 'Preencher campos obrigatórios'})
         if User.objects.filter(username=username).exists():
-            return render(request, 'user/register.html', {'error_message': 'Utilizador já existe'})
+            return render(request, 'votacao/register.html', {'error_message': 'Utilizador já existe'})
 
         user = User.objects.create_user(
             username=username, email=email, password=password, first_name=nome, last_name=apelido
@@ -98,13 +98,13 @@ def register(request):
 
         return loginview(request)
 
-    return render(request, 'user/register.html')
+    return render(request, 'votacao/register.html')
 
 
 @require_http_methods(['GET', 'POST'])
 def criarquestao(request):
     if not request.user.is_authenticated:
-        return render(request, template_name='user/login.html')
+        return render(request, template_name='votacao/login.html')
 
     if request.method == 'POST':
         questao_texto = request.POST.get('novaquestao')
@@ -116,7 +116,7 @@ def criarquestao(request):
 @require_http_methods(['GET', 'POST'])
 def detalhe(request, questao_id):
     if not request.user.is_authenticated:
-        return render(request, template_name='user/login.html')
+        return render(request, template_name='votacao/login.html')
 
     questao = get_object_or_404(Questao, pk=questao_id)
 
@@ -155,7 +155,7 @@ def detalhe(request, questao_id):
 @require_http_methods(['POST'])
 def voto(request, questao_id):
     if not request.user.is_authenticated:
-        return render(request, template_name='user/login.html')
+        return render(request, template_name='votacao/login.html')
 
     questao = get_object_or_404(Questao, pk=questao_id)
     try:
@@ -195,7 +195,7 @@ def voto(request, questao_id):
 @require_http_methods(['GET'])
 def resultados(request, questao_id):
     if not request.user.is_authenticated:
-        return render(request, template_name='user/login.html')
+        return render(request, template_name='votacao/login.html')
 
     questao = get_object_or_404(Questao, pk=questao_id)
     opcoes = get_object_or_404(Questao, pk=questao_id).opcao_set.annotate(count=Count('user'))
