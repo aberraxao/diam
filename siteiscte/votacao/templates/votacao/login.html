@@ -1,16 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
+{% extends 'votacao/index.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+    <form method="POST" action="{% url 'votacao:login' %}">
+            {% csrf_token %}
     {% if request.user.is_authenticated %}
         <h1>Olá {{ request.session.USERNAME }}!</h1>
     {% else %}
         <h1>Login</h1>
-        <form method="POST" action="{% url 'votacao:login' %}">
-            {% csrf_token %}
+
             <label for="username">Username: </label><input type="text" id="username" name="username" size="40"/>
             <br><br>
             <label for="password">Password: </label><input type="password" id="password" name="password" size="40"/>
@@ -18,7 +19,7 @@
                 {% if error_message %}
                     <strong>{{ error_message }}. </strong>
                 {% else %}
-                    Não tem conta? 
+                    Não tem conta?
                 {% endif %}
                 <a href="{% url 'votacao:register' %}">Registe aqui</a>
             </small></p>
@@ -26,5 +27,4 @@
             <input type="submit" value="Login"/>
         </form>
     {% endif %}
-</body>
-</html>
+{% endblock %}
