@@ -8,24 +8,23 @@ body {
 }
 
 header, nav, footer {
-    background-color: darkgreen;
+    background-color: #0D28C2;
     overflow: auto;
 }
 
 header h1 {
-    color: aliceblue;
+    color: white;
 }
 
 #banner {
-    background-image: url("../images/green-yellow-light.jpg");
-    background-size: 100% 100%;
+    background-image: url("../images/iscte_img.jpg");
     text-align: center;
-    padding: 40px;
+    padding: 200px;
 }
 
 
 #banner h1 {
-    color: darkgreen;
+    color: #0D28C2;
 }
 
 .container {
