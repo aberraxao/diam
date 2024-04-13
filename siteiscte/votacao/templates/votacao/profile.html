@@ -17,7 +17,7 @@
                 </a>
             {% endif %}
             <br><br>
-            <button type="submit" formaction="{% url 'votacao:fazer_upload' %}">Atualizar imagem de perfil</button>
+            <input type="submit" formaction="{% url 'votacao:fazer_upload' %}" value="Atualizar imagem de perfil">
             <ul>
                 <li>Username -- {{ request.session.USERNAME }}</li>
                 <li>E-mail -- {{ request.session.EMAIL }}</li>
@@ -27,7 +27,7 @@
         {% else %}
             <h1>Olá utilizador anónimo!</h1>
         {% endif %}
-        
+
     </form>
 
 {% endblock %}

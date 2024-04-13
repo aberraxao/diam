@@ -202,5 +202,5 @@ def fazer_upload(request):
         fs.delete(request.user.username)
         fs.save(request.user.username, myfile)
         request.session['PICTURE'] = fs.url(request.user.username)
-        return render(request, 'votacao/profile.html', )
+        return render(request, 'votacao/profile.html')
     return render(request, 'votacao/fazer_upload.html')

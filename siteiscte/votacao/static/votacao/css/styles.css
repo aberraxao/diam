@@ -56,6 +56,8 @@ nav a:active {
 }
 
 nav li {
+    font-weight: bold;
+    font-size: large;
     display: inline;
     padding-right: 20px;
 }
@@ -71,4 +73,15 @@ section {
 
 aside {
     color: azure;
+}
+
+input[type=submit], input[type=file]  {
+    background-color:#0D28C2;
+    color: azure;
+    border: none;
+    font-weight: bold;
+    font-size: large;
+    padding: 7px 14px;
+    margin: 4px 2px;
+    cursor: pointer;
 }

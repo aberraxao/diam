@@ -23,17 +23,16 @@
             <br>
         {% endfor %}
         <br>
-        <button type="submit" formmethod="post" formaction="{% url 'votacao:voto' questao.id %}">Voto</button>
+        <input type="submit" formmethod="post" formaction="{% url 'votacao:voto' questao.id %}"
+               value="Voto">
         {% if request.user.is_superuser %}
-            <button type="submit" formmethod="get"
-                    formaction="{% url 'votacao:criar_opcao' questao.id %}">Criar nova opção
-            </button>
-            <button type="submit" formmethod="post" formaction="{% url 'votacao:apagar_opcao' questao.id %}">Apagar
-                                                                                                             opção
-            </button>
-            <button type="submit" formmethod="post"
-                    formaction="{% url 'votacao:apagar_questao' questao.id %}">Apagar questão
-            </button>
+            <input type="submit" formmethod="get"
+                   formaction="{% url 'votacao:criar_opcao' questao.id %}" value="Criar nova opção">
+            <input type="submit" formmethod="post" style="background-color: red"
+                   formaction="{% url 'votacao:apagar_opcao' questao.id %}"
+                   value="Apagar opção">
+            <input type="submit" formmethod="post" style="background-color: red"
+                   formaction="{% url 'votacao:apagar_questao' questao.id %}" value="Apagar questão">
         {% endif %}
     </form>
 {% endblock %}
