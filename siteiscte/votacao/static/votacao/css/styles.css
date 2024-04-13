@@ -70,3 +70,8 @@ footer {
     color: azure;
     text-align: center;
 }
+
+header.picture, header.img {
+    width: 25px;
+    height: auto;
+}

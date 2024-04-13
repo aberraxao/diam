@@ -74,7 +74,6 @@ def register(request):
         nome = request.POST.get('nome', '')
         apelido = request.POST.get('apelido', '')
         email = request.POST.get('email', '')
-        curso = request.POST.get('curso', '')
         if not (username or email or password):
             return render(request, 'votacao/login.html', {'error_message': 'Preencher campos obrigatórios'})
         if User.objects.filter(username=username).exists():
@@ -84,7 +83,7 @@ def register(request):
             username=username, email=email, password=password, first_name=nome, last_name=apelido
         )
 
-        Aluno.objects.create(user=user, curso=curso)
+        Aluno.objects.create(user=user, curso="LEI-PL-3")
 
         return loginview(request)
 
@@ -113,7 +112,7 @@ def gravar_questao(request):
     return render(request, 'votacao/criarquestao.html')
 
 
-@require_http_methods(['POST'])
+@require_http_methods(['GET', 'POST'])
 @user_passes_test(check_superuser, redirect_field_name="votacao:login")
 def criar_opcao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
@@ -126,7 +125,6 @@ def criar_opcao(request, questao_id):
 @require_http_methods(['POST'])
 @user_passes_test(check_superuser, redirect_field_name="votacao:login")
 def apagar_opcao(request, questao_id):
-    # todo:    {'questao': questao, 'error_message': 'Não tem permissões para efetuar a operação'})
     questao = get_object_or_404(Questao, pk=questao_id)
     try:
         opcao = questao.opcao_set.get(pk=request.POST['opcao'])
@@ -144,8 +142,6 @@ def apagar_opcao(request, questao_id):
 @user_passes_test(check_superuser, redirect_field_name="votacao:login")
 def apagar_questao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
-    # todo:    {'questao': questao, 'error_message': 'Não tem permissões para efetuar a operação'})
-
     questao.delete()
     request.session['VOTOS'] = count_votes(request)
 
@@ -189,11 +185,12 @@ def resultados(request, questao_id):
     return render(request, 'votacao/resultados.html', {'questao': questao, 'opcoes': opcoes})
 
 
+@login_required(login_url=reverse_lazy('votacao:login'))
 def fazer_upload(request):
     if request.method == 'POST' and request.FILES.get('myfile') is not None:
         myfile = request.FILES['myfile']
         fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        return render(request, 'votacao/fazer_upload.html', {'uploaded_file_url': uploaded_file_url})
+        fs.delete(request.user.username)
+        fs.save(request.user.username, myfile)
+        return render(request, 'votacao/profile.html', )
     return render(request, 'votacao/fazer_upload.html')
