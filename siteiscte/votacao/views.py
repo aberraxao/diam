@@ -47,14 +47,23 @@ def loginview(request):
         login(request, user)
         request.session['USERNAME'] = user.username
         request.session['EMAIL'] = user.email
-        request.session['FULL_NAME'] = user.get_full_name()
+        request.session['FULL_NAME'] = user.get_full_name() if not None else user.username
         aluno = Aluno.objects.filter(user__username=request.user.username).first()
         request.session['CURSO'] = aluno.curso if aluno else 'Não inscrito'
         request.session['VOTOS'] = count_votes(request)
+        request.session['PICTURE'] = get_profile_picture(user.username)
 
         return HttpResponseRedirect(reverse('votacao:index'))
 
     return render(request, 'votacao/login.html')
+
+
+def get_profile_picture(username: str):
+    fs = FileSystemStorage()
+    if fs.exists(username):
+        return fs.url(username)
+
+    return 'static/media/profile.png'
 
 
 @require_http_methods(['GET'])
@@ -139,12 +148,12 @@ def apagar_opcao(request, questao_id):
         return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
 
 
+@require_http_methods(['POST'])
 @user_passes_test(check_superuser, redirect_field_name="votacao:login")
 def apagar_questao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     questao.delete()
     request.session['VOTOS'] = count_votes(request)
-
     return HttpResponseRedirect(reverse('votacao:index'))
 
 
@@ -192,5 +201,6 @@ def fazer_upload(request):
         fs = FileSystemStorage()
         fs.delete(request.user.username)
         fs.save(request.user.username, myfile)
-        return render(request, 'votacao/profile.html', )
+        request.session['PICTURE'] = fs.url(request.user.username)
+        return render(request, 'votacao/profile.html')
     return render(request, 'votacao/fazer_upload.html')

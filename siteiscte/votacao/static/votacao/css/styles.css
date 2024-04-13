@@ -5,15 +5,27 @@
 body {
     font-family: arial, helvitica, sans-serif;
     margin: 0;
+
+    img {
+        height: 20%;
+    }
 }
 
-header, nav, footer {
+header, nav {
     background-color: #0D28C2;
     overflow: auto;
+
+    img {
+        width: 25px;
+    }
 }
 
-header h1 {
-    color: white;
+header h1, header aside{
+    color: azure;
+}
+
+body aside{
+    float: right;
 }
 
 #banner {
@@ -22,10 +34,6 @@ header h1 {
     padding: 200px;
 }
 
-
-#banner h1 {
-    color: #0D28C2;
-}
 
 .container {
     width: 80%;
@@ -36,11 +44,11 @@ header h1 {
 
 nav a {
     text-decoration: none;
-    color: aliceblue;
+    color: azure;
 }
 
 nav a:hover {
-    color: orange;
+    color: lightblue;
 }
 
 nav a:active {
@@ -48,6 +56,8 @@ nav a:active {
 }
 
 nav li {
+    font-weight: bold;
+    font-size: large;
     display: inline;
     padding-right: 20px;
 }
@@ -61,17 +71,14 @@ section {
     margin-right: 1%;
 }
 
-aside {
-    color: azure;
-    padding: 0 10px;
-}
 
-footer {
+input[type=submit], input[type=file]  {
+    background-color:#0D28C2;
     color: azure;
-    text-align: center;
-}
-
-header.picture, header.img {
-    width: 25px;
-    height: auto;
+    border: none;
+    font-weight: bold;
+    font-size: large;
+    padding: 7px 14px;
+    margin: 4px 2px;
+    cursor: pointer;
 }
