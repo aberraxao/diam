@@ -6,9 +6,10 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
+from django.core.files.storage import FileSystemStorage
+from django.urls import reverse, reverse_lazy
 
 from .models import Questao, Opcao, Aluno
-from django.urls import reverse, reverse_lazy
 
 
 def check_superuser(user):
@@ -186,3 +187,13 @@ def resultados(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     opcoes = get_object_or_404(Questao, pk=questao_id).opcao_set.annotate(count=Count('user'))
     return render(request, 'votacao/resultados.html', {'questao': questao, 'opcoes': opcoes})
+
+
+def fazer_upload(request):
+    if request.method == 'POST' and request.FILES.get('myfile') is not None:
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        return render(request, 'votacao/fazer_upload.html', {'uploaded_file_url': uploaded_file_url})
+    return render(request, 'votacao/fazer_upload.html')

@@ -19,4 +19,5 @@ urlpatterns = [
     path('<int:questao_id>/apagar_questao', views.apagar_questao, name='apagar_questao'),
     path('criar_questao', views.criar_questao, name='criar_questao'),
     path('gravar_questao', views.gravar_questao, name='gravar_questao'),
+    path('fazer_upload', views.fazer_upload, name='fazer_upload'),
 ]

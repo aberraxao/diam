@@ -19,7 +19,8 @@
         {% else %}
             <h1>Olá utilizador anónimo!</h1>
         {% endif %}
-        <button type="submit" formaction="{% url 'votacao:index' %}">TODO: editar perfil e fazer upload de imagem
+        <button type="submit" formaction="{% url 'votacao:fazer_upload' %}">Upload imagem de perfile
+        <button type="submit" formaction="{% url 'votacao:index' %}">TODO:todo: editar dados
         </button>
     </form>
 
