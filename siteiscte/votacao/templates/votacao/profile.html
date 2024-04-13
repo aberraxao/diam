@@ -11,6 +11,13 @@
     <form>
         {% if request.user.is_authenticated %}
             <h1>Olá {{ request.session.FULL_NAME }}!</h1>
+            {% if request.session.PICTURE %}
+                <a href="{% url 'votacao:informacao' %}">
+                    <img src="{{ request.session.PICTURE }}?{% now "U" %}" alt="Imagem de perfil">
+                </a>
+            {% endif %}
+            <br><br>
+            <button type="submit" formaction="{% url 'votacao:fazer_upload' %}">Atualizar imagem de perfil</button>
             <ul>
                 <li>Username -- {{ request.session.USERNAME }}</li>
                 <li>E-mail -- {{ request.session.EMAIL }}</li>
@@ -20,15 +27,7 @@
         {% else %}
             <h1>Olá utilizador anónimo!</h1>
         {% endif %}
-
-        <object data="{% static 'media' %}/{{ request.session.USERNAME }}?{% now "U" %}"
-                type="image/png"
-                width="20%">
-            <img src="{% static 'votacao/images/../../static/media/profile.png' %}" alt="Imagem de perfil" title="Imagem de perfil"
-                 width="20%">
-        </object>
-        <br><br>
-        <button type="submit" formaction="{% url 'votacao:fazer_upload' %}">Upload imagem de perfil</button>
+        
     </form>
 
 {% endblock %}

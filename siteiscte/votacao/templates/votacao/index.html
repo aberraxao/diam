@@ -15,19 +15,17 @@
             {% block username %}
                 <aside>
                     <form>
-
                         {% if request.user.is_authenticated %}
                             Olá {{ request.session.USERNAME }},
                             já votaste {{ request.session.VOTOS }} {{ request.session.VOTOS|pluralize:"vez,vezes" }}
                             {% if request.session.PICTURE %}
                                 <a href="{% url 'votacao:informacao' %}">
-                                    <img
-                                            src="{{ request.session.PICTURE }}?{% now "U" %}"
-                                            alt="Imagem de perfil"
-                                            title="Imagem de perfil">
+                                    <img src="{{ request.session.PICTURE }}?{% now "U" %}" alt="Imagem de perfil">
                                 </a>
                             {% endif %}
-                            <button type="submit" formaction="{% url 'votacao:logout' %}">Logout</button>
+                            <a href="{% url 'votacao:logout' %}">
+                                <img src="{% static 'votacao/images/logout.png' %} " alt="Logout">
+                            </a>
                         {% else %}
                             <button type="submit" formaction="{% url 'votacao:login' %}">Login</button>
                             <button type="submit" formaction="{% url 'votacao:register' %}">Registar</button>

@@ -47,7 +47,7 @@ def loginview(request):
         login(request, user)
         request.session['USERNAME'] = user.username
         request.session['EMAIL'] = user.email
-        request.session['FULL_NAME'] = user.get_full_name()
+        request.session['FULL_NAME'] = user.get_full_name() if not None else user.username
         aluno = Aluno.objects.filter(user__username=request.user.username).first()
         request.session['CURSO'] = aluno.curso if aluno else 'Não inscrito'
         request.session['VOTOS'] = count_votes(request)

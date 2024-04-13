@@ -5,13 +5,17 @@
 body {
     font-family: arial, helvitica, sans-serif;
     margin: 0;
+
+    img {
+        height: 20%;
+    }
 }
 
 header, nav, footer {
     background-color: #0D28C2;
     overflow: auto;
 
-    picture, img {
+    img {
         height: 25px;
     }
 }
@@ -67,9 +71,4 @@ section {
 
 aside {
     color: azure;
-}
-
-footer {
-    color: azure;
-    text-align: center;
 }
