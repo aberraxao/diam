@@ -148,12 +148,12 @@ def apagar_opcao(request, questao_id):
         return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
 
 
+@require_http_methods(['POST'])
 @user_passes_test(check_superuser, redirect_field_name="votacao:login")
 def apagar_questao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     questao.delete()
     request.session['VOTOS'] = count_votes(request)
-
     return HttpResponseRedirect(reverse('votacao:index'))
 
 
