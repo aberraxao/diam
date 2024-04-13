@@ -1,13 +1,19 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
+from django.core.files.storage import FileSystemStorage
+from django.urls import reverse, reverse_lazy
 
 from .models import Questao, Opcao, Aluno
-from django.urls import reverse
+
+
+def check_superuser(user):
+    return user.is_superuser
 
 
 @require_http_methods(['POST'])
@@ -15,29 +21,18 @@ def count_votes(request) -> int:
     return request.user.opcao_set.count()
 
 
-@require_http_methods(['GET'])
+@login_required(login_url=reverse_lazy('votacao:login'))
 def index(request):
-    if not request.user.is_authenticated:
-        return render(request, template_name='votacao/login.html')
-    context = {}
-    if request.GET.get('_method', '') == 'create_questao':
-        if request.user.is_superuser:
-            return render(request, 'votacao/criarquestao.html')
-        else:
-            context['error_message'] = 'Não tem permissões para efetuar esta operação'
-
-    latest_question_list = Questao.objects.order_by('-pub_data')[:10]
-    context['latest_question_list'] = latest_question_list
-    context['username'] = request.user.username
+    context = {
+        'latest_question_list': Questao.objects.order_by('-pub_data')[:10],
+        'username': request.user.username
+    }
 
     return render(request, 'votacao/index.html', context)
 
 
 @require_http_methods(['GET', 'POST'])
 def loginview(request):
-    if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('votacao:index'))
-
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -80,7 +75,6 @@ def register(request):
         apelido = request.POST.get('apelido', '')
         email = request.POST.get('email', '')
         curso = request.POST.get('curso', '')
-        grupo = request.POST.get('grupo', '')
         if not (username or email or password):
             return render(request, 'votacao/login.html', {'error_message': 'Preencher campos obrigatórios'})
         if User.objects.filter(username=username).exists():
@@ -90,10 +84,6 @@ def register(request):
             username=username, email=email, password=password, first_name=nome, last_name=apelido
         )
 
-        if grupo:
-            curso_grupo, _ = Group.objects.get_or_create(name=f"{curso}-{grupo}")
-            user.group = curso_grupo
-
         Aluno.objects.create(user=user, curso=curso)
 
         return loginview(request)
@@ -101,62 +91,70 @@ def register(request):
     return render(request, 'votacao/register.html')
 
 
-@require_http_methods(['GET', 'POST'])
-def criarquestao(request):
-    if not request.user.is_authenticated:
-        return render(request, template_name='votacao/login.html')
-
-    if request.method == 'POST':
-        questao_texto = request.POST.get('novaquestao')
-        if questao_texto:
-            Questao(questao_texto=questao_texto, pub_data=timezone.now()).save()
-    return render(request, 'votacao/criarquestao.html')
-
-
-@require_http_methods(['GET', 'POST'])
+@login_required(login_url=reverse_lazy('votacao:login'))
 def detalhe(request, questao_id):
-    if not request.user.is_authenticated:
-        return render(request, template_name='votacao/login.html')
-
     questao = get_object_or_404(Questao, pk=questao_id)
-
-    if 'delete' in request.POST.get('_method', '') or 'create' in request.GET.get('_method', ''):
-        if not request.user.is_superuser:
-            return render(request, 'votacao/detalhe.html',
-                          {'questao': questao, 'error_message': 'Não tem permissões para efetuar a operação'})
-
-        if request.POST.get('_method', '') == 'delete_questao':
-            questao.delete()
-            request.session['VOTOS'] = count_votes(request)
-            return HttpResponseRedirect(reverse('votacao:index'))
-
-        elif request.POST.get('_method', '') == 'delete_opcao':
-            try:
-                opcao = questao.opcao_set.get(pk=request.POST['opcao'])
-            except (KeyError, Opcao.DoesNotExist):
-                return render(request, 'votacao/detalhe.html', {
-                    'questao': questao,
-                    'error_message': 'Não escolheu uma opção',
-                })
-            else:
-                opcao.delete()
-                request.session['VOTOS'] = count_votes(request)
-                return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
-
-        elif request.GET.get('_method', '') == 'create_opcao':
-            opcao_texto = request.POST.get('novaopcao')
-            if opcao_texto:
-                questao.opcao_set.create(opcao_texto=opcao_texto).save()
-            return render(request, 'votacao/criaropcao.html', {'questao': questao})
 
     return render(request, 'votacao/detalhe.html', {'questao': questao})
 
 
-@require_http_methods(['POST'])
-def voto(request, questao_id):
-    if not request.user.is_authenticated:
-        return render(request, template_name='votacao/login.html')
+@require_http_methods(['GET'])
+@user_passes_test(check_superuser, redirect_field_name="votacao:login")
+def criar_questao(request):
+    return render(request, 'votacao/criarquestao.html')
 
+
+@require_http_methods(['POST'])
+@user_passes_test(check_superuser, redirect_field_name="votacao:login")
+def gravar_questao(request):
+    questao_texto = request.POST.get('novaquestao')
+    if questao_texto:
+        Questao(questao_texto=questao_texto, pub_data=timezone.now()).save()
+    return render(request, 'votacao/criarquestao.html')
+
+
+@require_http_methods(['POST'])
+@user_passes_test(check_superuser, redirect_field_name="votacao:login")
+def criar_opcao(request, questao_id):
+    questao = get_object_or_404(Questao, pk=questao_id)
+    opcao_texto = request.POST.get('novaopcao')
+    if opcao_texto:
+        questao.opcao_set.create(opcao_texto=opcao_texto).save()
+    return render(request, 'votacao/criaropcao.html', {'questao': questao})
+
+
+@require_http_methods(['POST'])
+@user_passes_test(check_superuser, redirect_field_name="votacao:login")
+def apagar_opcao(request, questao_id):
+    # todo:    {'questao': questao, 'error_message': 'Não tem permissões para efetuar a operação'})
+    questao = get_object_or_404(Questao, pk=questao_id)
+    try:
+        opcao = questao.opcao_set.get(pk=request.POST['opcao'])
+    except (KeyError, Opcao.DoesNotExist):
+        return render(request, 'votacao/detalhe.html', {
+            'questao': questao,
+            'error_message': 'Não escolheu uma opção',
+        })
+    else:
+        opcao.delete()
+        request.session['VOTOS'] = count_votes(request)
+        return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
+
+
+@user_passes_test(check_superuser, redirect_field_name="votacao:login")
+def apagar_questao(request, questao_id):
+    questao = get_object_or_404(Questao, pk=questao_id)
+    # todo:    {'questao': questao, 'error_message': 'Não tem permissões para efetuar a operação'})
+
+    questao.delete()
+    request.session['VOTOS'] = count_votes(request)
+
+    return HttpResponseRedirect(reverse('votacao:index'))
+
+
+@require_http_methods(['POST'])
+@login_required(login_url=reverse_lazy('votacao:login'))
+def voto(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     try:
         opcao = questao.opcao_set.get(pk=request.POST['opcao'])
@@ -172,16 +170,7 @@ def voto(request, questao_id):
                 'error_message': 'Só pode votar uma vez em cada opção',
             })
 
-        user_groups = list(request.user.groups.all().values_list('name', flat=True))
-
-        if not user_groups:
-            return render(request, 'votacao/detalhe.html', {
-                'questao': questao,
-                'error_message': 'Não pertence a um grupo votante',
-            })
-
-        max_votes = int(max([char[-1] for char in user_groups])) + 5
-        if count_votes(request) >= max_votes:
+        if count_votes(request) >= 8 and not request.user.is_superuser:
             return render(request, 'votacao/detalhe.html', {
                 'questao': questao,
                 'error_message': 'Limite de votos atingido',
@@ -193,10 +182,18 @@ def voto(request, questao_id):
 
 
 @require_http_methods(['GET'])
+@login_required(login_url=reverse_lazy('votacao:login'))
 def resultados(request, questao_id):
-    if not request.user.is_authenticated:
-        return render(request, template_name='votacao/login.html')
-
     questao = get_object_or_404(Questao, pk=questao_id)
     opcoes = get_object_or_404(Questao, pk=questao_id).opcao_set.annotate(count=Count('user'))
     return render(request, 'votacao/resultados.html', {'questao': questao, 'opcoes': opcoes})
+
+
+def fazer_upload(request):
+    if request.method == 'POST' and request.FILES.get('myfile') is not None:
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        return render(request, 'votacao/fazer_upload.html', {'uploaded_file_url': uploaded_file_url})
+    return render(request, 'votacao/fazer_upload.html')

@@ -4,33 +4,36 @@
     Detalhe da questao {{ questao.id }}
 {% endblock %}
 
+{% block opcoes_e_controlos %}
+    <li><a href="{% url 'votacao:index' %}">Voltar às questões</a></li>
+{% endblock %}
+
 {% block content %}
     <form>
         {% csrf_token %}
         <h1>{{ questao.questao_texto }}</h1>
-    
+
         {% if error_message %}
             <p><strong>{{ error_message }}</strong></p>
         {% endif %}
-    
+
         {% for opcao in questao.opcao_set.all %}
             <input type="radio" name="opcao" id="opcao{{ forloop.counter }}" value="{{ opcao.id }}"/>
             <label for="opcao{{ forloop.counter }}">{{ opcao.opcao_texto }}</label>
             <br>
         {% endfor %}
         <br>
-        <button type="submit" formmethod="post" formaction="{% url 'votacao:voto' questao.id %}">Voto
-        </button>
-        <button type="submit" formmethod="get" formaction="{% url 'votacao:index' %}">Voltar às questões</button>
-        <br><br>
-        <button type="submit" formmethod="get" name="_method" value="create_opcao"
-                formaction="{% url 'votacao:detalhe' questao.id %}">Criar nova opção
-        </button>
-        <button type="submit" formmethod="post" name="_method" value="delete_opcao"
-                formaction="{% url 'votacao:detalhe' questao.id %}">Apagar opção
-        </button>
-        <button type="submit" formmethod="post" name="_method" value="delete_questao"
-                formaction="{% url 'votacao:detalhe' questao.id %}">Apagar questão
-        </button>
+        <button type="submit" formmethod="post" formaction="{% url 'votacao:voto' questao.id %}">Voto</button>
+        {% if request.user.is_superuser %}
+            <button type="submit" formmethod="get"
+                    formaction="{% url 'votacao:criar_opcao' questao.id %}">Criar nova opção
+            </button>
+            <button type="submit" formmethod="post" formaction="{% url 'votacao:apagar_opcao' questao.id %}">Apagar
+                                                                                                             opção
+            </button>
+            <button type="submit" formmethod="post"
+                    formaction="{% url 'votacao:apagar_questao' questao.id %}">Apagar questão
+            </button>
+        {% endif %}
     </form>
 {% endblock %}

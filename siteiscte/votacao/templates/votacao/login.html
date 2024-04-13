@@ -1,17 +1,20 @@
 {% extends 'votacao/index.html' %}
 
-{% block title %}
-    Login
+{% block title %}Login{% endblock %}
+
+{% block username %}
+{% endblock %}
+
+{% block opcoes_e_controlos %}
 {% endblock %}
 
 {% block content %}
     <form method="POST" action="{% url 'votacao:login' %}">
-            {% csrf_token %}
-    {% if request.user.is_authenticated %}
-        <h1>Olá {{ request.session.USERNAME }}!</h1>
-    {% else %}
-        <h1>Login</h1>
-
+        {% csrf_token %}
+        {% if request.user.is_authenticated %}
+            <h1>Olá {{ request.session.USERNAME }}!</h1>
+        {% else %}
+            <h1>Login</h1>
             <label for="username">Username: </label><input type="text" id="username" name="username" size="40"/>
             <br><br>
             <label for="password">Password: </label><input type="password" id="password" name="password" size="40"/>
@@ -25,6 +28,6 @@
             </small></p>
             <br>
             <input type="submit" value="Login"/>
-        </form>
-    {% endif %}
+            </form>
+        {% endif %}
 {% endblock %}
