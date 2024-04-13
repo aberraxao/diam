@@ -2,6 +2,10 @@
 
 {% block title %}Resultados{% endblock %}
 
+{% block outros_links %}
+    <li><a href="{% url 'votacao:index' %}">Voltar às questões</a></li>
+{% endblock %}
+
 {% block content %}
     <form>
         {% csrf_token %}

@@ -1,10 +1,7 @@
 from datetime import timedelta
 
-from django.contrib.auth.models import User, Group
-
-from votacao.models import Questao, Opcao
+from votacao.models import Questao
 from django.utils import timezone
-from django.db.models import Sum
 
 from django.contrib.auth.models import User, Group
 
@@ -52,17 +49,11 @@ def create_questions() -> None:
 
 
 def create_users() -> None:
-    numero = 0
     for name in users:
-        numero += 1
-        mail = name.lower() + "@iscte.pt"
-        password = "pass"
-        curso = "LEI-PL"
-
         if not User.objects.filter(username=name).exists():
-            user = User.objects.create_user(name, mail, password)
-            curso_grupo, _ = Group.objects.get_or_create(name=f"{curso}-{numero}")
-            user.groups.add(curso_grupo)
+            user = User.objects.create_user(name, email=f"{name.lower()}@iscte.pt", password="pass")
+            curso, _ = Group.objects.get_or_create(name="LEI-PL-3")
+            user.groups.add(curso)
             Aluno.objects.create(user=user, curso=curso)
 
 

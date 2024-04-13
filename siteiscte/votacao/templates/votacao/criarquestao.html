@@ -2,6 +2,10 @@
 
 {% block title %}Criar questão{% endblock %}
 
+{% block outros_links %}
+    <li><a href="{% url 'votacao:index' %}">Voltar às questões</a></li>
+{% endblock %}
+
 {% block content %}
     {% if request.user.is_superuser %}
         <form>
@@ -10,10 +14,8 @@
             <label for="novaquestao"></label><input type="text" id="novaquestao" name="novaquestao" size="60"/>
             <br>
             <br>
-            <button type="submit" formmethod="post" formaction="{% url 'votacao:criarquestao' %}">Gravar nova questão
+            <button type="submit" formmethod="post" formaction="{% url 'votacao:gravar_questao' %}">Gravar nova questão
             </button>
-            <br><br>
-            <button type="submit" formmethod="get" formaction="{% url 'votacao:index' %}">Voltar às questões</button>
         </form>
     {% endif %}
 {% endblock %}

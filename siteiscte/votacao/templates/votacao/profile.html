@@ -2,6 +2,10 @@
 
 {% block title %}Perfil{% endblock %}
 
+{% block outros_links %}
+    <li><a href="{% url 'votacao:index' %}">Voltar às questões</a></li>
+{% endblock %}
+
 {% block content %}
     <form>
         {% if request.user.is_authenticated %}
@@ -17,7 +21,6 @@
         {% endif %}
         <button type="submit" formaction="{% url 'votacao:index' %}">TODO: editar perfil e fazer upload de imagem
         </button>
-        <button type="submit" formaction="{% url 'votacao:index' %}">Voltar à página inicial</button>
     </form>
 
 {% endblock %}

@@ -12,28 +12,32 @@
             <section>
                 <h1>O ISCTE e as suas perguntas</h1>
             </section>
-            <aside>
-                <form>
-                    {% if request.user.is_authenticated %}
-                        Olá {{ request.session.USERNAME }},
-                        já votaste {{ request.session.VOTOS }} {{ request.session.VOTOS|pluralize:"vez,vezes" }}
-                        <button type="submit" formaction="{% url 'votacao:informacao' %}">Perfil</button>
-                        <button type="submit" formaction="{% url 'votacao:logout' %}">Logout</button>
-                    {% else %}
-                        <button type="submit" formaction="{% url 'votacao:login' %}">Login</button>
-                        <button type="submit" formaction="{% url 'votacao:register' %}">Registar</button>
-                    {% endif %}
-                </form>
-            </aside>
+            {% block username %}
+                <aside>
+                    <form>
+                        {% if request.user.is_authenticated %}
+                            Olá {{ request.session.USERNAME }},
+                            já votaste {{ request.session.VOTOS }} {{ request.session.VOTOS|pluralize:"vez,vezes" }}
+                            <button type="submit" formaction="{% url 'votacao:informacao' %}">Perfil</button>
+                            <button type="submit" formaction="{% url 'votacao:logout' %}">Logout</button>
+                        {% else %}
+                            <button type="submit" formaction="{% url 'votacao:login' %}">Login</button>
+                            <button type="submit" formaction="{% url 'votacao:register' %}">Registar</button>
+                        {% endif %}
+                    </form>
+                </aside>
+            {% endblock %}
         </div>
         <div id="banner"></div>
     </header>
     <nav>
         <div class="container">
             <ul>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Contacts</a></li>
+                {% block outros_links %}
+                    {% if request.user.is_superuser %}
+                    <li><a href="{% url 'votacao:criar_questao' %}">Criar nova questão</a></li>
+                    {% endif %}
+                {% endblock %}
             </ul>
         </div>
     </nav>
@@ -57,9 +61,6 @@
                     {% else %}
                         <h1>Não há questões disponíveis.</h1>
                     {% endif %}
-                    <button type="submit" formmethod="get" name="_method" value="create_questao"
-                            formaction="{% url 'votacao:index' %}">Criar nova questão
-                    </button>
                 </form>
             {% endblock %}
         </div>
