@@ -10,10 +10,14 @@ body {
 header, nav, footer {
     background-color: #0D28C2;
     overflow: auto;
+
+    picture, img {
+        height: 25px;
+    }
 }
 
 header h1 {
-    color: white;
+    color: azure;
 }
 
 #banner {
@@ -36,7 +40,7 @@ header h1 {
 
 nav a {
     text-decoration: none;
-    color: aliceblue;
+    color: azure;
 }
 
 nav a:hover {
@@ -63,15 +67,9 @@ section {
 
 aside {
     color: azure;
-    padding: 0 10px;
 }
 
 footer {
     color: azure;
     text-align: center;
-}
-
-header.picture, header.img {
-    width: 25px;
-    height: auto;
 }

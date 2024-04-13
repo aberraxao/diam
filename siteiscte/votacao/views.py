@@ -51,10 +51,19 @@ def loginview(request):
         aluno = Aluno.objects.filter(user__username=request.user.username).first()
         request.session['CURSO'] = aluno.curso if aluno else 'Não inscrito'
         request.session['VOTOS'] = count_votes(request)
+        request.session['PICTURE'] = get_profile_picture(user.username)
 
         return HttpResponseRedirect(reverse('votacao:index'))
 
     return render(request, 'votacao/login.html')
+
+
+def get_profile_picture(username: str):
+    fs = FileSystemStorage()
+    if fs.exists(username):
+        return fs.url(username)
+
+    return 'static/media/profile.png'
 
 
 @require_http_methods(['GET'])
@@ -192,5 +201,6 @@ def fazer_upload(request):
         fs = FileSystemStorage()
         fs.delete(request.user.username)
         fs.save(request.user.username, myfile)
+        request.session['PICTURE'] = fs.url(request.user.username)
         return render(request, 'votacao/profile.html', )
     return render(request, 'votacao/fazer_upload.html')
