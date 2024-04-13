@@ -33,7 +33,7 @@
     <nav>
         <div class="container">
             <ul>
-                {% block outros_links %}
+                {% block opcoes_e_controlos %}
                     {% if request.user.is_superuser %}
                     <li><a href="{% url 'votacao:criar_questao' %}">Criar nova questão</a></li>
                     {% endif %}
