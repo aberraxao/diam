@@ -15,6 +15,14 @@
             {% block username %}
                 <aside>
                     <form>
+                        <object class="picture"
+                                data="{% static 'media' %}/{{ request.session.USERNAME }}?{% now "U" %}"
+                                type="image/png"
+                                width=25px>
+                            <img src="{% static 'votacao/images/profile.png' %}" alt="Imagem de perfil"
+                                 title="Imagem de perfil"
+                                 width=25px>
+                        </object>
                         {% if request.user.is_authenticated %}
                             Olá {{ request.session.USERNAME }},
                             já votaste {{ request.session.VOTOS }} {{ request.session.VOTOS|pluralize:"vez,vezes" }}
@@ -35,7 +43,7 @@
             <ul>
                 {% block opcoes_e_controlos %}
                     {% if request.user.is_superuser %}
-                    <li><a href="{% url 'votacao:criar_questao' %}">Criar nova questão</a></li>
+                        <li><a href="{% url 'votacao:criar_questao' %}">Criar nova questão</a></li>
                     {% endif %}
                 {% endblock %}
             </ul>
