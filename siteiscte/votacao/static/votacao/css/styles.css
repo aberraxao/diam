@@ -11,17 +11,21 @@ body {
     }
 }
 
-header, nav, footer {
+header, nav {
     background-color: #0D28C2;
     overflow: auto;
 
     img {
-        height: 25px;
+        width: 25px;
     }
 }
 
-header h1 {
+header h1, header aside{
     color: azure;
+}
+
+body aside{
+    float: right;
 }
 
 #banner {
@@ -30,10 +34,6 @@ header h1 {
     padding: 200px;
 }
 
-
-#banner h1 {
-    color: #0D28C2;
-}
 
 .container {
     width: 80%;
@@ -48,7 +48,7 @@ nav a {
 }
 
 nav a:hover {
-    color: orange;
+    color: lightblue;
 }
 
 nav a:active {
@@ -71,9 +71,6 @@ section {
     margin-right: 1%;
 }
 
-aside {
-    color: azure;
-}
 
 input[type=submit], input[type=file]  {
     background-color:#0D28C2;
