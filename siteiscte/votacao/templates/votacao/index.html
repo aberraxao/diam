@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'votacao/css/styles.css' %}?{% now "U" %}">
-    <script src="{% static 'votacao/scripts/scripts.js' %}}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{% static 'votacao/scripts/scripts.js' %}"></script>
     <title>{% block title %} Página de votação {% endblock %}</title>
 </head>
 <body>
@@ -42,6 +43,11 @@
             <ul>
                 {% block opcoes_e_controlos %}
                     {% if request.user.is_superuser %}
+                        {% if latest_question_list %}
+                            <li>
+                                <button id="botao_questoes">Mostrar Questões</button>
+                            </li>
+                        {% endif %}
                         <li><a href="{% url 'votacao:criar_questao' %}">Criar nova questão</a></li>
                     {% endif %}
                 {% endblock %}
@@ -51,7 +57,7 @@
     <main>
         <div class="container">
             {% block content %}
-                <form>
+                <form id="lista_questoes" style="display: none">
                     {% csrf_token %}
                     {% if latest_question_list %}
                         <h1>Lista de questões disponíveis</h1>
