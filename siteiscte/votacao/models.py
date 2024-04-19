@@ -30,3 +30,7 @@ class Opcao(models.Model):
 
     def __str__(self):
         return self.opcao_texto
+
+
+class PalavraProibida(models.Model):
+    palavra = models.CharField(max_length=200)

@@ -92,7 +92,7 @@ def register(request):
             username=username, email=email, password=password, first_name=nome, last_name=apelido
         )
 
-        Aluno.objects.create(user=user, curso="LEI-PL-3")
+        Aluno.objects.create(user=user, curso='LEI-PL-3')
 
         return loginview(request)
 
@@ -107,13 +107,13 @@ def detalhe(request, questao_id):
 
 
 @require_http_methods(['GET'])
-@user_passes_test(check_superuser, redirect_field_name="votacao:login")
+@user_passes_test(check_superuser, redirect_field_name='votacao:login')
 def criar_questao(request):
     return render(request, 'votacao/criarquestao.html')
 
 
 @require_http_methods(['POST'])
-@user_passes_test(check_superuser, redirect_field_name="votacao:login")
+@user_passes_test(check_superuser, redirect_field_name='votacao:login')
 def gravar_questao(request):
     questao_texto = request.POST.get('novaquestao')
     if questao_texto:
@@ -122,7 +122,7 @@ def gravar_questao(request):
 
 
 @require_http_methods(['GET', 'POST'])
-@user_passes_test(check_superuser, redirect_field_name="votacao:login")
+@user_passes_test(check_superuser, redirect_field_name='votacao:login')
 def criar_opcao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     opcao_texto = request.POST.get('novaopcao')
@@ -132,7 +132,7 @@ def criar_opcao(request, questao_id):
 
 
 @require_http_methods(['POST'])
-@user_passes_test(check_superuser, redirect_field_name="votacao:login")
+@user_passes_test(check_superuser, redirect_field_name='votacao:login')
 def apagar_opcao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     try:
@@ -149,7 +149,7 @@ def apagar_opcao(request, questao_id):
 
 
 @require_http_methods(['POST'])
-@user_passes_test(check_superuser, redirect_field_name="votacao:login")
+@user_passes_test(check_superuser, redirect_field_name='votacao:login')
 def apagar_questao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     questao.delete()
