@@ -20,14 +20,14 @@
                         {% if request.user.is_authenticated %}
                             Olá <label id="picture_username" for="imagem_perfil">{{ request.session.USERNAME }}</label>
                             {% if request.session.PICTURE %}
-                                <img id="imagem_perfil" src="{{ request.session.PICTURE }}?{% now "U" %}" alt="Imagem de perfil">
-                            {% endif %}, já votaste {{ request.session.VOTOS }} {{ request.session.VOTOS|pluralize:"vez,vezes" }}
+                                <img id="imagem_perfil" src="{{ request.session.PICTURE }}?{% now "U" %}"
+                                     alt="Imagem de perfil">
+                            {% endif %}, já votaste {{ request.session.VOTOS }}
+                            {{ request.session.VOTOS|pluralize:"vez,vezes" }}
                             <a href="{% url 'votacao:informacao' %}">
-                                <img src="{% static 'votacao/images/pencil.png' %} " alt="Editar perfil">
-                            </a>
+                                <img src="{% static 'votacao/images/pencil.png' %}" alt="Editar perfil"></a>
                             <a href="{% url 'votacao:logout' %}">
-                                <img src="{% static 'votacao/images/logout.png' %} " alt="Logout">
-                            </a>
+                                <img src="{% static 'votacao/images/logout.png' %}" alt="Logout"></a>
                         {% else %}
                             <button type="submit" formaction="{% url 'votacao:login' %}">Login</button>
                             <button type="submit" formaction="{% url 'votacao:register' %}">Registar</button>
