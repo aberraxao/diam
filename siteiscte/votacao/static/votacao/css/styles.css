@@ -20,11 +20,11 @@ header, nav {
     }
 }
 
-header h1, header aside{
+header h1, header aside {
     color: azure;
 }
 
-body aside{
+body aside {
     float: right;
 }
 
@@ -47,8 +47,8 @@ nav a {
     color: azure;
 }
 
-nav a:hover {
-    color: lightblue;
+nav a:hover, button:hover {
+    opacity: 0.6;
 }
 
 nav a:active {
@@ -72,13 +72,15 @@ section {
 }
 
 
-input[type=submit], input[type=file]  {
-    background-color:#0D28C2;
-    color: azure;
+button, input[type=submit], input[type=file] {
+    background-color: #0D28C2;
     border: none;
+    color: azure;
+    cursor: pointer;
     font-weight: bold;
     font-size: large;
+    opacity: 1;
     padding: 7px 14px;
     margin: 4px 2px;
-    cursor: pointer;
+    transition: 0.3s;
 }

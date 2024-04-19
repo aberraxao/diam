@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'votacao/css/styles.css' %}?{% now "U" %}">
-    <script src="{% static 'votacao/scripts/scripts.js' %}}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{% static 'votacao/scripts/scripts.js' %}"></script>
     <title>{% block title %} Página de votação {% endblock %}</title>
 </head>
 <body>
@@ -17,13 +18,13 @@
                 <aside>
                     <form>
                         {% if request.user.is_authenticated %}
-                            Olá {{ request.session.USERNAME }},
-                            já votaste {{ request.session.VOTOS }} {{ request.session.VOTOS|pluralize:"vez,vezes" }}
+                            Olá <label id="picture_username" for="imagem_perfil">{{ request.session.USERNAME }}</label>
                             {% if request.session.PICTURE %}
-                                <a href="{% url 'votacao:informacao' %}">
-                                    <img src="{{ request.session.PICTURE }}?{% now "U" %}" alt="Imagem de perfil">
-                                </a>
-                            {% endif %}
+                                <img id="imagem_perfil" src="{{ request.session.PICTURE }}?{% now "U" %}" alt="Imagem de perfil">
+                            {% endif %}, já votaste {{ request.session.VOTOS }} {{ request.session.VOTOS|pluralize:"vez,vezes" }}
+                            <a href="{% url 'votacao:informacao' %}">
+                                <img src="{% static 'votacao/images/pencil.png' %} " alt="Editar perfil">
+                            </a>
                             <a href="{% url 'votacao:logout' %}">
                                 <img src="{% static 'votacao/images/logout.png' %} " alt="Logout">
                             </a>
@@ -42,6 +43,11 @@
             <ul>
                 {% block opcoes_e_controlos %}
                     {% if request.user.is_superuser %}
+                        {% if latest_question_list %}
+                            <li>
+                                <button id="botao_questoes">Mostrar questões</button>
+                            </li>
+                        {% endif %}
                         <li><a href="{% url 'votacao:criar_questao' %}">Criar nova questão</a></li>
                     {% endif %}
                 {% endblock %}
@@ -51,7 +57,7 @@
     <main>
         <div class="container">
             {% block content %}
-                <form>
+                <form id="lista_questoes" style="display: none">
                     {% csrf_token %}
                     {% if latest_question_list %}
                         <h1>Lista de questões disponíveis</h1>
