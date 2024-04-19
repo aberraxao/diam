@@ -4,10 +4,6 @@ $(document).ready(function () {
 
     botao_questoes.click(function () {
         lista_questoes.toggle();
-        if (lista_questoes.is(":visible")) {
-            botao_questoes.text("Esconder Questões");
-        } else {
-            botao_questoes.text("Mostrar Questões");
-        }
+        botao_questoes.text(lista_questoes.is(":visible") ? "Esconder Questões": "Mostrar Questões");
     });
 })
