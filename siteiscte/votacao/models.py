@@ -3,8 +3,6 @@ from django.db import models
 from django.utils import timezone
 import datetime
 
-from siteiscte.settings import MEDIA_ROOT, MEDIA_URL, STATIC_URL
-
 
 class Aluno(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

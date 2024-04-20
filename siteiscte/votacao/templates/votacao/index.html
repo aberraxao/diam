@@ -11,20 +11,21 @@
 <body>
     <header>
         <div class="container">
-            <section>
+            <section style="width: 68%">
                 <h1>O ISCTE e as suas perguntas</h1>
             </section>
             <aside>
                 {% block username %}
                     <form>
                         {% if request.user.is_authenticated %}
-                            Olá <label id="picture_username" for="imagem_perfil">{{ request.user.username }}</label>
+                            Olá <label id="picture_username" for="imagem_perfil_xs">{{ request.user.username }}</label>
                             {% if request.user.imagem %}
-                                <img src="{% static 'media' %}/{{ request.user.imagem.url }}?{% now "U" %}"
+                                <img id="imagem_perfil_xs"
+                                     src="{% static 'media' %}/{{ request.user.imagem.url }}?{% now "U" %}"
                                      alt="Imagem de perfil">
-
                             {% else %}
-                                <img src="{% static 'votacao/images/profile.png' %}?{% now "U" %}"
+                                <img id="imagem_perfil_xs"
+                                     src="{% static 'votacao/images/profile.png' %}?{% now "U" %}"
                                      alt="Imagem de perfil">
                             {% endif %}
                             , já votaste {{ request.user.opcao_set.count }}

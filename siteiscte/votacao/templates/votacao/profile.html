@@ -10,23 +10,26 @@
 {% block subtitle %}Olá {{ request.user.aluno }}!{% endblock %}
 
 {% block content %}
-    <form>
-        {% if request.user.is_authenticated %}
-            <aside>
-                <ul>
-                    <li>Username -- {{ request.user.username }}</li>
-                    <li>E-mail -- {{ request.user.email }}</li>
-                    <li>Curso -- {{ request.user.aluno.curso }}</li>
-                </ul>
-            </aside>
-            {% if request.user.imagem %}
-                <img src="{% static 'media' %}/{{ request.user.imagem.url }}?{% now "U" %}" alt="Imagem de perfil">
-            {% else %}
-                <img src="{% static 'votacao/images/profile.png' %}?{% now "U" %}" alt="Imagem de perfil">
-            {% endif %}
-            <br><br>
-            <input type="submit" formaction="{% url 'votacao:fazer_upload' %}" value="Atualizar imagem de perfil">
-            <br>
-        {% endif %}
-    </form>
+
+{% if request.user.is_authenticated %}
+    <section>
+        <form>
+            <div id="imagem_perfil_xl">
+                {% if request.user.imagem %}
+                    <img src="{% static 'media' %}/{{ request.user.imagem.url }}?{% now "U" %}" alt="Imagem de perfil">
+                {% else %}
+                    <img src="{% static 'votacao/images/profile.png' %}?{% now "U" %}" alt="Imagem de perfil">
+                {% endif %}
+            </div><p>
+                <input type="submit" formaction="{% url 'votacao:fazer_upload' %}" value="Atualizar imagem de perfil">
+        </form>
+    </section>
+
+    <aside id="detalhes_perfil" style="display: none">
+        <p><b>Username</b> -- {{ request.user.username }}</p>
+        <p><b>E-mail</b> -- {{ request.user.email }}</p>
+        <p><b>Curso</b> -- {{ request.user.aluno.curso }}</p>
+    </aside>
+{% endif %}
+
 {% endblock %}
