@@ -10,6 +10,7 @@ Iniciar a consola do python com o django e correr o script 'test_db.pt'
 python manage.py shell
 
 exec(open('test_db.py', encoding='utf-8').read())
+exit()
 ```
 
 Para o django criar os ficheiros com as modificações dos modelos

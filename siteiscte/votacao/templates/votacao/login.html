@@ -2,19 +2,18 @@
 
 {% block title %}Login{% endblock %}
 
-{% block username %}
-{% endblock %}
+{% block username %}{% endblock %}
 
-{% block opcoes_e_controlos %}
-{% endblock %}
+{% block opcoes_e_controlos %}{% endblock %}
+
+{% block subtitle %}Login{% endblock %}
 
 {% block content %}
     <form method="POST" action="{% url 'votacao:login' %}">
         {% csrf_token %}
         {% if request.user.is_authenticated %}
-            <h1>Olá {{ request.session.USERNAME }}!</h1>
+            <h1>Olá {{ request.user.username }}!</h1>
         {% else %}
-            <h1>Login</h1>
             <label for="username">Username: </label><input type="text" id="username" name="username" size="40"/>
             <br><br>
             <label for="password">Password: </label><input type="password" id="password" name="password" size="40"/>

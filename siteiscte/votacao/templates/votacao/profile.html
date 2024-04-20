@@ -7,29 +7,26 @@
     <li><a href="{% url 'votacao:index' %}">Voltar às questões</a></li>
 {% endblock %}
 
+{% block subtitle %}Olá {{ request.user.aluno }}!{% endblock %}
+
 {% block content %}
     <form>
         {% if request.user.is_authenticated %}
-            <h1>Olá {{ request.session.FULL_NAME }}!</h1>
             <aside>
                 <ul>
-                    <li>Username -- {{ request.session.USERNAME }}</li>
-                    <li>E-mail -- {{ request.session.EMAIL }}</li>
-                    <li>Curso -- {{ request.session.CURSO }}</li>
+                    <li>Username -- {{ request.user.username }}</li>
+                    <li>E-mail -- {{ request.user.email }}</li>
+                    <li>Curso -- {{ request.user.aluno.curso }}</li>
                 </ul>
             </aside>
-            {% if request.session.PICTURE %}
-                <a href="{% url 'votacao:informacao' %}">
-                    <img src="{{ request.session.PICTURE }}?{% now "U" %}" alt="Imagem de perfil">
-                </a>
+            {% if request.user.imagem %}
+                <img src="{% static 'media' %}/{{ request.user.imagem.url }}?{% now "U" %}" alt="Imagem de perfil">
+            {% else %}
+                <img src="{% static 'votacao/images/profile.png' %}?{% now "U" %}" alt="Imagem de perfil">
             {% endif %}
             <br><br>
             <input type="submit" formaction="{% url 'votacao:fazer_upload' %}" value="Atualizar imagem de perfil">
             <br>
-        {% else %}
-            <h1>Olá utilizador anónimo!</h1>
         {% endif %}
-
     </form>
-
 {% endblock %}

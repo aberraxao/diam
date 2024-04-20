@@ -14,16 +14,21 @@
             <section>
                 <h1>O ISCTE e as suas perguntas</h1>
             </section>
-            {% block username %}
-                <aside>
+            <aside>
+                {% block username %}
                     <form>
                         {% if request.user.is_authenticated %}
-                            Olá <label id="picture_username" for="imagem_perfil">{{ request.session.USERNAME }}</label>
-                            {% if request.session.PICTURE %}
-                                <img id="imagem_perfil" src="{{ request.session.PICTURE }}?{% now "U" %}"
+                            Olá <label id="picture_username" for="imagem_perfil">{{ request.user.username }}</label>
+                            {% if request.user.imagem %}
+                                <img src="{% static 'media' %}/{{ request.user.imagem.url }}?{% now "U" %}"
                                      alt="Imagem de perfil">
-                            {% endif %}, já votaste {{ request.session.VOTOS }}
-                            {{ request.session.VOTOS|pluralize:"vez,vezes" }}
+
+                            {% else %}
+                                <img src="{% static 'votacao/images/profile.png' %}?{% now "U" %}"
+                                     alt="Imagem de perfil">
+                            {% endif %}
+                            , já votaste {{ request.user.opcao_set.count }}
+                            {{ request.user.opcao_set.count|pluralize:"vez,vezes" }}
                             <a href="{% url 'votacao:informacao' %}">
                                 <img src="{% static 'votacao/images/pencil.png' %}" alt="Editar perfil"></a>
                             <a href="{% url 'votacao:logout' %}">
@@ -33,8 +38,8 @@
                             <button type="submit" formaction="{% url 'votacao:register' %}">Registar</button>
                         {% endif %}
                     </form>
-                </aside>
-            {% endblock %}
+                {% endblock %}
+            </aside>
         </div>
         <div id="banner"></div>
     </header>
@@ -42,12 +47,12 @@
         <div class="container">
             <ul>
                 {% block opcoes_e_controlos %}
+                    {% if latest_question_list %}
+                        <li>
+                            <button id="botao_questoes">Mostrar questões</button>
+                        </li>
+                    {% endif %}
                     {% if request.user.is_superuser %}
-                        {% if latest_question_list %}
-                            <li>
-                                <button id="botao_questoes">Mostrar questões</button>
-                            </li>
-                        {% endif %}
                         <li><a href="{% url 'votacao:criar_questao' %}">Criar nova questão</a></li>
                     {% endif %}
                 {% endblock %}
@@ -56,11 +61,11 @@
     </nav>
     <main>
         <div class="container">
+            <h1>{% block subtitle %}Lista de questões disponíveis{% endblock %}</h1>
             {% block content %}
                 <form id="lista_questoes" style="display: none">
                     {% csrf_token %}
                     {% if latest_question_list %}
-                        <h1>Lista de questões disponíveis</h1>
                         {% if error_message %}
                             <p><strong>{{ error_message }}</strong></p>
                         {% endif %}

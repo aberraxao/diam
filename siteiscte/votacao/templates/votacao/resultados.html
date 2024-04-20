@@ -4,19 +4,18 @@
 
 {% block opcoes_e_controlos %}
     <li><a href="{% url 'votacao:index' %}">Voltar às questões</a></li>
+    <li><a href="{% url 'votacao:detalhe' questao.id %}">Voltar à questão</a></li>
 {% endblock %}
+
+{% block subtitle %}{{ questao.questao_texto }}{% endblock %}
 
 {% block content %}
     <form>
         {% csrf_token %}
-        <h1>{{ questao.questao_texto }}</h1>
         <ul>
             {% for opcao in opcoes %}
                 <li>{{ opcao.opcao_texto }} -- {{ opcao.count }} voto{{ opcao.count|pluralize }}</li>
             {% endfor %}
         </ul>
-        <br>
-        <button type="submit" formmethod="get" formaction="{% url 'votacao:detalhe' questao.id %}">Voltar à questão
-        </button>
     </form>
 {% endblock %}

@@ -6,13 +6,16 @@
 
 {% block opcoes_e_controlos %}
     <li><a href="{% url 'votacao:index' %}">Voltar às questões</a></li>
+    {% if request.user.is_superuser %}
+        <li><a href="{% url 'votacao:criar_opcao' questao.id %}">Criar nova opção</a></li>
+    {% endif %}
 {% endblock %}
+
+{% block subtitle %}{{ questao.questao_texto }}{% endblock %}
 
 {% block content %}
     <form>
         {% csrf_token %}
-        <h1>{{ questao.questao_texto }}</h1>
-
         {% if error_message %}
             <p><strong>{{ error_message }}</strong></p>
         {% endif %}
@@ -26,8 +29,6 @@
         <input type="submit" formmethod="post" formaction="{% url 'votacao:voto' questao.id %}"
                value="Voto">
         {% if request.user.is_superuser %}
-            <input type="submit" formmethod="get"
-                   formaction="{% url 'votacao:criar_opcao' questao.id %}" value="Criar nova opção">
             <input type="submit" formmethod="post" style="background-color: red"
                    formaction="{% url 'votacao:apagar_opcao' questao.id %}"
                    value="Apagar opção">

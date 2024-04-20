@@ -1,17 +1,16 @@
 {% extends 'votacao/index.html' %}
 
-{% block title %}
-    Upload imagem
-{% endblock %}
+{% block title %}Upload imagem{% endblock %}
 
 {% block opcoes_e_controlos %}
-    <li><a href="{% url 'votacao:index' %}">Voltar ao inicio</a></li>
+    <li><a href="{% url 'votacao:index' %}">Voltar ao início</a></li>
 {% endblock %}
+
+{% block subtitle %}{% endblock %}
 
 {% block content %}
     <form method="post" enctype="multipart/form-data" action="{% url 'votacao:fazer_upload' %}">
         {% csrf_token %}
-        <br><br>
         <input type="file" name="myfile">
         <input type="submit" value="Upload">
     </form>

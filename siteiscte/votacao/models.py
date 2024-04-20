@@ -1,15 +1,18 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.db import models
 from django.utils import timezone
 import datetime
+
+from siteiscte.settings import MEDIA_ROOT, MEDIA_URL, STATIC_URL
 
 
 class Aluno(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     curso = models.CharField(max_length=100)
+    comentario = models.TextField(null=True)
 
     def __str__(self):
-        return self.user.get_full_name()
+        return self.user.get_full_name() if not None else self.user.get_username()
 
 
 class Questao(models.Model):
@@ -30,6 +33,11 @@ class Opcao(models.Model):
 
     def __str__(self):
         return self.opcao_texto
+
+
+class Imagem(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    url = models.CharField(max_length=255, null=True)
 
 
 class PalavraProibida(models.Model):
