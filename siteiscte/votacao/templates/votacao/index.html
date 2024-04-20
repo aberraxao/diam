@@ -62,25 +62,26 @@
     </nav>
     <main>
         <div class="container">
-            <h1>{% block subtitle %}Lista de questões disponíveis{% endblock %}</h1>
+            {% block subtitle %}{% endblock %}
             {% block content %}
-                <form id="lista_questoes" style="display: none">
-                    {% csrf_token %}
-                    {% if latest_question_list %}
-                        {% if error_message %}
-                            <p><strong>{{ error_message }}</strong></p>
-                        {% endif %}
-                        <ul>
-                            {% for questao in latest_question_list %}
-                                <li>
-                                    <a href="{% url 'votacao:detalhe' questao.id %}">{{ questao.questao_texto }}</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <h1>Não há questões disponíveis.</h1>
+            <form id="lista_questoes" style="display: none">
+                {% csrf_token %}
+                <h1>Lista de questões disponíveis</h1>
+                {% if latest_question_list %}
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
                     {% endif %}
-                </form>
+                    <ul>
+                        {% for questao in latest_question_list %}
+                            <li>
+                                <a href="{% url 'votacao:detalhe' questao.id %}">{{ questao.questao_texto }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <h1>Não há questões disponíveis.</h1>
+                {% endif %}
+            </form>
             {% endblock %}
         </div>
     </main>

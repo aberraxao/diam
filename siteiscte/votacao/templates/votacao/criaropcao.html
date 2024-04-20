@@ -7,7 +7,7 @@
     <li><a href="{% url 'votacao:detalhe' questao.id %}">Voltar à questão</a></li>
 {% endblock %}
 
-{% block subtitle %}{{ questao.questao_texto }}{% endblock %}
+{% block subtitle %}<h1>{{ questao.questao_texto }}</h1>{% endblock %}
 
 {% block content %}
     {% if request.user.is_superuser %}

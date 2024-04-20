@@ -6,7 +6,7 @@
     <li><a href="{% url 'votacao:index' %}">Voltar às questões</a></li>
 {% endblock %}
 
-{% block subtitle %}Texto da nova questão{% endblock %}
+{% block subtitle %}<h1>Texto da nova questão</h1>{% endblock %}
 
 {% block content %}
     {% if request.user.is_superuser %}
