@@ -37,6 +37,3 @@ class Imagem(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     url = models.CharField(max_length=255, null=True)
 
-
-class PalavraProibida(models.Model):
-    palavra = models.CharField(max_length=200)

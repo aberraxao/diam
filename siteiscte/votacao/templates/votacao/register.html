@@ -12,9 +12,9 @@
     {% if request.user.is_authenticated %}
         <h1>Olá {{ request.user.username }}!</h1>
     {% else %}
-        <form class="form-container" method="POST" action="{% url 'votacao:register' %}">
-            {% csrf_token %}
-            <div class="form-column">
+        <form method="POST" action="{% url 'votacao:register' %}" class="container" style="width: 100%">
+            <div class="section" style="width: 50%;">
+                {% csrf_token %}
                 <label for="username" class="required">Username</label><br>
                 <input type="text" required id="username" name="username" size="40"/>
                 <p>
@@ -29,8 +29,12 @@
                 <p>
                     <label for="email" class="required">E-mail</label><br>
                     <input type="email" required id="email" name="email" size="40"/>
-                <p>
-                <p><small>
+            </div>
+            <aside style="padding-top: 0">
+                <label for="comentario">Comentário<br>
+                    <textarea name="comentario" cols="50" rows="5"></textarea>
+                </label>
+                <p><br><small>
                     {% if error_message %}
                         <strong>{{ error_message }}. </strong>
                     {% else %}
@@ -38,13 +42,8 @@
                     {% endif %}
                     <a href="{% url 'votacao:login' %}">Faça login aqui</a>
                 </small></p>
-                <input type="submit" value="Submeter"/>
-            </div>
-            <div class="form-column">
-                <label for="comentario">Comentário<br>
-                    <textarea name="comentario" cols="40" rows="5"></textarea>
-                </label>
-            </div>
+                <p><input type="submit" value="Submeter"/>
+            </aside>
         </form>
     {% endif %}
 {% endblock %}

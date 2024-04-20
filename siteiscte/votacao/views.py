@@ -179,3 +179,13 @@ def fazer_upload(request):
 
         return render(request, 'votacao/profile.html')
     return render(request, 'votacao/fazer_upload.html')
+
+
+def fazer_comentario():
+    palavras = [
+        'abécula', 'abentesma', 'achavascado', 'alimária', 'andrajoso',
+        'barregã', 'biltre', 'cacóstomo', 'cuarra', 'estólido',
+        'estroso', 'estultilóquio', 'nefelibata', 'néscio', 'pechenga',
+        'sevandija', 'somítico', 'tatibitate', 'xexé', 'cheché',
+        'xexelento'
+    ]

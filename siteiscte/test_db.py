@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from django.utils import timezone
 from django.contrib.auth.models import User, Group
-from votacao.models import Aluno, Questao, PalavraProibida
+from votacao.models import Aluno, Questao
 
 users = ["Maria", "Ana", "Rui", "Rita", "Joao", "Ines"]
 questoes = {"Vamos fazer uma festa no fim do ano?": [["Sim."],
@@ -58,29 +58,16 @@ def create_superuser() -> None:
     User.objects.create_superuser(username='admin', email='admin', password='admin')
 
 
-def create_palavras_proibidas() -> None:
-    palavras = [
-        'abécula', 'abentesma', 'achavascado', 'alimária', 'andrajoso',
-        'barregã', 'biltre', 'cacóstomo', 'cuarra', 'estólido',
-        'estroso', 'estultilóquio', 'nefelibata', 'néscio', 'pechenga',
-        'sevandija', 'somítico', 'tatibitate', 'xexé', 'cheché',
-        'xexelento'
-    ]
-    PalavraProibida.objects.bulk_create([PalavraProibida(palavra=palavra) for palavra in palavras])
-
-
 def create_db() -> None:
     create_superuser()
     create_users()
     create_questions()
-    create_palavras_proibidas()
 
 
 def delete_all() -> None:
     Questao.objects.all().delete()
     User.objects.all().delete()
     Group.objects.all().delete()
-    PalavraProibida.objects.all().delete()
 
 
 delete_all()
