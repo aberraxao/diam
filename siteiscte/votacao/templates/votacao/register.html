@@ -2,40 +2,61 @@
 
 {% block title %}Registo{% endblock %}
 
-{% block username %}
-{% endblock %}
+{% block username %}{% endblock %}
 
-{% block opcoes_e_controlos %}
-{% endblock %}
+{% block opcoes_e_controlos %}{% endblock %}
+
+{% block subtitle %}<h1>Registo</h1>{% endblock %}
 
 {% block content %}
     {% if request.user.is_authenticated %}
-        <h1>Olá {{ request.session.USERNAME }}!</h1>
+        <h1>Olá {{ request.user.username }}!</h1>
     {% else %}
-        <form method="POST" action="{% url 'votacao:register' %}">
-            {% csrf_token %}
-            <h1>Registo</h1>
-            <label for="username">Username*: </label><input type="text" required id="username" name="username"
-                                                           size="40"/>
-            <br><br>
-            <label for="password">Password*: </label><input type="password" required id="password" name="password"
-                                                           size="40"/>
-            <br><br>
-            <label for="nome">Nome Próprio: </label><input type="text" id="nome" name="nome" size="40"/>
-            <br><br>
-            <label for="apelido">Apelido: </label><input type="text" id="apelido" name="apelido" size="40"/>
-            <br><br>
-            <label for="email">E-mail*: </label><input type="email" required id="email" name="email" size="40"/>
-            <br><br>
-            <p><small>
-                {% if error_message %}
-                    <strong>{{ error_message }}. </strong>
+        <form method="POST" action="{% url 'votacao:register' %}" class="container" style="width: 100%">
+            <div class="section" style="width: 50%;">
+                {% csrf_token %}
+                <label for="username" class="required">Username</label><br>
+                <input type="text" required id="username" name="username" size="40"/>
+                <p>
+                    <label for="password" class="required">Password</label><br>
+                    <input type="password" required id="password" name="password" size="40"/>
+                <p>
+                    <label for="nome">Nome Próprio</label><br>
+                    <input type="text" id="nome" name="nome" size="40"/>
+                <p>
+                    <label for="apelido">Apelido</label><br>
+                    <input type="text" id="apelido" name="apelido" size="40"/>
+                <p>
+                    <label for="email" class="required">E-mail</label><br>
+                    <input type="email" required id="email" name="email" size="40"/>
+            </div>
+            <aside style="padding-top: 0">
+                <label for="comentario">Comentário<br>
+                    <textarea id="comentario" name="comentario" cols="50" rows="5"></textarea>
+                </label>
+                <p id="comentario-feedback-ko" style="color: red"><strong> Olha a linguagem! :(</strong></p>
+                <p id="comentario-feedback-ok" style="color: darkgreen"><strong>Comentário aceite! :)</strong></p>
+                {% if error_comentario %}
+                    <script>$("#comentario-feedback-ko").show();
+                    $("#comentario-feedback-ok").hide();</script>
                 {% else %}
-                    Já tem conta?
+                    <script>$("#comentario-feedback-ko").hide();
+                    $("#comentario-feedback-ok").show();</script>
                 {% endif %}
-                <a href="{% url 'votacao:login' %}">Faça login aqui</a>
-            </small></p>
-            <input type="submit" value="Submeter"/>
+                <input id="insultos" type="checkbox" required value="1">
+                <small>
+                    <label for="insultos" class="required">Declaro que não escrevi palavras insultuosas</label>
+                </small>
+                <p><input type="submit" value="Submeter"/>
+                    <small>
+                        {% if error_message %}
+                            <strong>{{ error_message }}. </strong>
+                        {% else %}
+                            Já tem conta?
+                        {% endif %}
+                        <a href="{% url 'votacao:login' %}">Faça login aqui</a>
+                    </small>
+            </aside>
         </form>
     {% endif %}
 {% endblock %}

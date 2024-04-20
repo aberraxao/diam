@@ -11,30 +11,36 @@
 <body>
     <header>
         <div class="container">
-            <section>
+            <section style="width: 68%">
                 <h1>O ISCTE e as suas perguntas</h1>
             </section>
-            {% block username %}
-                <aside>
+            <aside>
+                {% block username %}
                     <form>
                         {% if request.user.is_authenticated %}
-                            Olá <label id="picture_username" for="imagem_perfil">{{ request.session.USERNAME }}</label>
-                            {% if request.session.PICTURE %}
-                                <img id="imagem_perfil" src="{{ request.session.PICTURE }}?{% now "U" %}" alt="Imagem de perfil">
-                            {% endif %}, já votaste {{ request.session.VOTOS }} {{ request.session.VOTOS|pluralize:"vez,vezes" }}
+                            Olá <label id="username" for="imagem-perfil-xs">{{ request.user.username }}</label>
+                            {% if request.user.imagem %}
+                                <img id="imagem-perfil-xs"
+                                     src="{% static 'media' %}/{{ request.user.imagem.url }}?{% now "U" %}"
+                                     alt="Imagem de perfil">
+                            {% else %}
+                                <img id="imagem-perfil-xs"
+                                     src="{% static 'votacao/images/profile.png' %}?{% now "U" %}"
+                                     alt="Imagem de perfil">
+                            {% endif %}
+                            , já votaste {{ request.user.opcao_set.count }}
+                            {{ request.user.opcao_set.count|pluralize:"vez,vezes" }}
                             <a href="{% url 'votacao:informacao' %}">
-                                <img src="{% static 'votacao/images/pencil.png' %} " alt="Editar perfil">
-                            </a>
+                                <img src="{% static 'votacao/images/pencil.png' %}" alt="Editar perfil"></a>
                             <a href="{% url 'votacao:logout' %}">
-                                <img src="{% static 'votacao/images/logout.png' %} " alt="Logout">
-                            </a>
+                                <img src="{% static 'votacao/images/logout.png' %}" alt="Logout"></a>
                         {% else %}
                             <button type="submit" formaction="{% url 'votacao:login' %}">Login</button>
                             <button type="submit" formaction="{% url 'votacao:register' %}">Registar</button>
                         {% endif %}
                     </form>
-                </aside>
-            {% endblock %}
+                {% endblock %}
+            </aside>
         </div>
         <div id="banner"></div>
     </header>
@@ -42,12 +48,12 @@
         <div class="container">
             <ul>
                 {% block opcoes_e_controlos %}
+                    {% if latest_question_list %}
+                        <li>
+                            <button id="botao-questoes">Mostrar questões</button>
+                        </li>
+                    {% endif %}
                     {% if request.user.is_superuser %}
-                        {% if latest_question_list %}
-                            <li>
-                                <button id="botao_questoes">Mostrar questões</button>
-                            </li>
-                        {% endif %}
                         <li><a href="{% url 'votacao:criar_questao' %}">Criar nova questão</a></li>
                     {% endif %}
                 {% endblock %}
@@ -56,25 +62,26 @@
     </nav>
     <main>
         <div class="container">
+            {% block subtitle %}{% endblock %}
             {% block content %}
-                <form id="lista_questoes" style="display: none">
-                    {% csrf_token %}
-                    {% if latest_question_list %}
-                        <h1>Lista de questões disponíveis</h1>
-                        {% if error_message %}
-                            <p><strong>{{ error_message }}</strong></p>
-                        {% endif %}
-                        <ul>
-                            {% for questao in latest_question_list %}
-                                <li>
-                                    <a href="{% url 'votacao:detalhe' questao.id %}">{{ questao.questao_texto }}</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <h1>Não há questões disponíveis.</h1>
+            <form id="lista-questoes" style="display: none">
+                {% csrf_token %}
+                <h1>Lista de questões disponíveis</h1>
+                {% if latest_question_list %}
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
                     {% endif %}
-                </form>
+                    <ul>
+                        {% for questao in latest_question_list %}
+                            <li>
+                                <a href="{% url 'votacao:detalhe' questao.id %}">{{ questao.questao_texto }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <h1>Não há questões disponíveis.</h1>
+                {% endif %}
+            </form>
             {% endblock %}
         </div>
     </main>

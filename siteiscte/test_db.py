@@ -1,11 +1,8 @@
 from datetime import timedelta
 
-from votacao.models import Questao
 from django.utils import timezone
-
 from django.contrib.auth.models import User, Group
-
-from votacao.models import Aluno
+from votacao.models import Aluno, Questao
 
 users = ["Maria", "Ana", "Rui", "Rita", "Joao", "Ines"]
 questoes = {"Vamos fazer uma festa no fim do ano?": [["Sim."],

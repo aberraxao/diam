@@ -7,29 +7,29 @@
     <li><a href="{% url 'votacao:index' %}">Voltar às questões</a></li>
 {% endblock %}
 
-{% block content %}
-    <form>
-        {% if request.user.is_authenticated %}
-            <h1>Olá {{ request.session.FULL_NAME }}!</h1>
-            <aside>
-                <ul>
-                    <li>Username -- {{ request.session.USERNAME }}</li>
-                    <li>E-mail -- {{ request.session.EMAIL }}</li>
-                    <li>Curso -- {{ request.session.CURSO }}</li>
-                </ul>
-            </aside>
-            {% if request.session.PICTURE %}
-                <a href="{% url 'votacao:informacao' %}">
-                    <img src="{{ request.session.PICTURE }}?{% now "U" %}" alt="Imagem de perfil">
-                </a>
-            {% endif %}
-            <br><br>
-            <input type="submit" formaction="{% url 'votacao:fazer_upload' %}" value="Atualizar imagem de perfil">
-            <br>
-        {% else %}
-            <h1>Olá utilizador anónimo!</h1>
-        {% endif %}
+{% block subtitle %}<h1>Olá {{ request.user.aluno }}!</h1>{% endblock %}
 
-    </form>
+{% block content %}
+
+{% if request.user.is_authenticated %}
+    <section>
+        <form>
+            <div id="imagem-perfil-xl">
+                {% if request.user.imagem %}
+                    <img src="{% static 'media' %}/{{ request.user.imagem.url }}?{% now "U" %}" alt="Imagem de perfil">
+                {% else %}
+                    <img src="{% static 'votacao/images/profile.png' %}?{% now "U" %}" alt="Imagem de perfil">
+                {% endif %}
+            </div><p>
+                <input type="submit" formaction="{% url 'votacao:fazer_upload' %}" value="Atualizar imagem de perfil">
+        </form>
+    </section>
+
+    <aside id="detalhes-perfil" style="display: none">
+        <p><b>Username</b> -- {{ request.user.username }}</p>
+        <p><b>E-mail</b> -- {{ request.user.email }}</p>
+        <p><b>Curso</b> -- {{ request.user.aluno.curso }}</p>
+    </aside>
+{% endif %}
 
 {% endblock %}
