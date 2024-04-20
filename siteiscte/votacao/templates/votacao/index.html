@@ -18,13 +18,13 @@
                 {% block username %}
                     <form>
                         {% if request.user.is_authenticated %}
-                            Olá <label id="picture_username" for="imagem_perfil_xs">{{ request.user.username }}</label>
+                            Olá <label id="username" for="imagem-perfil-xs">{{ request.user.username }}</label>
                             {% if request.user.imagem %}
-                                <img id="imagem_perfil_xs"
+                                <img id="imagem-perfil-xs"
                                      src="{% static 'media' %}/{{ request.user.imagem.url }}?{% now "U" %}"
                                      alt="Imagem de perfil">
                             {% else %}
-                                <img id="imagem_perfil_xs"
+                                <img id="imagem-perfil-xs"
                                      src="{% static 'votacao/images/profile.png' %}?{% now "U" %}"
                                      alt="Imagem de perfil">
                             {% endif %}
@@ -50,7 +50,7 @@
                 {% block opcoes_e_controlos %}
                     {% if latest_question_list %}
                         <li>
-                            <button id="botao_questoes">Mostrar questões</button>
+                            <button id="botao-questoes">Mostrar questões</button>
                         </li>
                     {% endif %}
                     {% if request.user.is_superuser %}
@@ -64,7 +64,7 @@
         <div class="container">
             {% block subtitle %}{% endblock %}
             {% block content %}
-            <form id="lista_questoes" style="display: none">
+            <form id="lista-questoes" style="display: none">
                 {% csrf_token %}
                 <h1>Lista de questões disponíveis</h1>
                 {% if latest_question_list %}

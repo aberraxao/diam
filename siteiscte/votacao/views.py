@@ -63,20 +63,36 @@ def register(request):
         nome = request.POST.get('nome', '')
         apelido = request.POST.get('apelido', '')
         email = request.POST.get('email', '')
+        comentario = request.POST.get('comentario', '')
         if not (username or email or password):
             return render(request, 'votacao/login.html', {'error_message': 'Preencher campos obrigatórios'})
+
+        if comentario_invalido(comentario):
+            return render(request, 'votacao/register.html', {'error_comentario': 'Já não se pode confiar'})
+
         if User.objects.filter(username=username).exists():
             return render(request, 'votacao/register.html', {'error_message': 'Utilizador já existe'})
 
         user = User.objects.create_user(
             username=username, email=email, password=password, first_name=nome, last_name=apelido
         )
-
-        Aluno.objects.create(user=user, curso='LEI-PL-3')
+        Aluno.objects.create(user=user, curso='LEI-PL-3', comentario=comentario)
 
         return loginview(request)
 
     return render(request, 'votacao/register.html')
+
+
+def comentario_invalido(comentario: str) -> bool:
+    palavras_insultuosas = [
+        'abécula', 'abentesma', 'achavascado', 'alimária', 'andrajoso',
+        'barregã', 'biltre', 'cacóstomo', 'cuarra', 'estólido',
+        'estroso', 'estultilóquio', 'nefelibata', 'néscio', 'pechenga',
+        'sevandija', 'somítico', 'tatibitate', 'xexé', 'cheché',
+        'xexelento'
+    ]
+
+    return any(palavra in comentario for palavra in palavras_insultuosas)
 
 
 @login_required(login_url=reverse_lazy('votacao:login'))
@@ -179,13 +195,3 @@ def fazer_upload(request):
 
         return render(request, 'votacao/profile.html')
     return render(request, 'votacao/fazer_upload.html')
-
-
-def fazer_comentario():
-    palavras = [
-        'abécula', 'abentesma', 'achavascado', 'alimária', 'andrajoso',
-        'barregã', 'biltre', 'cacóstomo', 'cuarra', 'estólido',
-        'estroso', 'estultilóquio', 'nefelibata', 'néscio', 'pechenga',
-        'sevandija', 'somítico', 'tatibitate', 'xexé', 'cheché',
-        'xexelento'
-    ]

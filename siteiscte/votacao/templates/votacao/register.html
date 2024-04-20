@@ -32,17 +32,30 @@
             </div>
             <aside style="padding-top: 0">
                 <label for="comentario">Comentário<br>
-                    <textarea name="comentario" cols="50" rows="5"></textarea>
+                    <textarea id="comentario" name="comentario" cols="50" rows="5"></textarea>
                 </label>
-                <p><br><small>
-                    {% if error_message %}
-                        <strong>{{ error_message }}. </strong>
-                    {% else %}
-                        Já tem conta?
-                    {% endif %}
-                    <a href="{% url 'votacao:login' %}">Faça login aqui</a>
-                </small></p>
+                <p id="comentario-feedback-ko" style="color: red"><strong> Olha a linguagem! :(</strong></p>
+                <p id="comentario-feedback-ok" style="color: darkgreen"><strong>Comentário aceite! :)</strong></p>
+                {% if error_comentario %}
+                    <script>$("#comentario-feedback-ko").show();
+                    $("#comentario-feedback-ok").hide();</script>
+                {% else %}
+                    <script>$("#comentario-feedback-ko").hide();
+                    $("#comentario-feedback-ok").show();</script>
+                {% endif %}
+                <input id="insultos" type="checkbox" required value="1">
+                <small>
+                    <label for="insultos" class="required">Declaro que não escrevi palavras insultuosas</label>
+                </small>
                 <p><input type="submit" value="Submeter"/>
+                    <small>
+                        {% if error_message %}
+                            <strong>{{ error_message }}. </strong>
+                        {% else %}
+                            Já tem conta?
+                        {% endif %}
+                        <a href="{% url 'votacao:login' %}">Faça login aqui</a>
+                    </small>
             </aside>
         </form>
     {% endif %}

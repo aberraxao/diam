@@ -14,7 +14,7 @@
 {% if request.user.is_authenticated %}
     <section>
         <form>
-            <div id="imagem_perfil_xl">
+            <div id="imagem-perfil-xl">
                 {% if request.user.imagem %}
                     <img src="{% static 'media' %}/{{ request.user.imagem.url }}?{% now "U" %}" alt="Imagem de perfil">
                 {% else %}
@@ -25,7 +25,7 @@
         </form>
     </section>
 
-    <aside id="detalhes_perfil" style="display: none">
+    <aside id="detalhes-perfil" style="display: none">
         <p><b>Username</b> -- {{ request.user.username }}</p>
         <p><b>E-mail</b> -- {{ request.user.email }}</p>
         <p><b>Curso</b> -- {{ request.user.aluno.curso }}</p>
