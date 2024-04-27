@@ -8,8 +8,12 @@ from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse, reverse_lazy
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from .models import Questao, Opcao, Aluno, Imagem
+from .serializers import QuestaoSerializer
 
 
 def check_superuser(user):
@@ -195,3 +199,17 @@ def fazer_upload(request):
 
         return render(request, 'votacao/profile.html')
     return render(request, 'votacao/fazer_upload.html')
+
+
+@api_view(['GET', 'POST'])
+def questoes(request):
+    if request.method == 'GET':
+        lista_questoes = Questao.objects.all()
+        serializer = QuestaoSerializer(lista_questoes, context={'request': request}, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = QuestaoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
