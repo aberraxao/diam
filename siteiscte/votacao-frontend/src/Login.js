@@ -5,7 +5,6 @@ axios.defaults.withCredentials = true
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [msg, setMsg] = useState('');
     const [error, setError] = useState('');
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -48,7 +47,6 @@ const Login = () => {
                     Não tem conta? <a href="http://localhost:8000/votacao/register">Registe aqui</a>
                 </small></p>
                 {error && <p>{error}</p>}
-                {<p>{msg}</p>}
                 <button type="submit">Login</button>
             </form>
         </div>

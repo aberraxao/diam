@@ -1,14 +1,16 @@
 import './App.css';
-import QuestionList from "./QuestionList";
-import CreateQuestion from "./CreateQuestion";
 import Login from "./Login";
-import Contador from "./Contador";
+import Contador from "./contador";
+import MostraEEsconde from "./mostraeesconde";
+import FormSimples from "./formsimples";
 
 function App() {
     return (
         <div className="App">
             <Login/>
             <Contador/>
+            <MostraEEsconde/>
+            <FormSimples/>
         </div>
     );
 }
