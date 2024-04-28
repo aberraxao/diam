@@ -12,7 +12,7 @@ function QuestionList() {
     return (
         <>
             <h1>Lista de questões</h1>
-            {questoes.map((q) => <p>{q.questao_texto}</p>)}
+            {questoes.map((q) => <p key={q.id}>{q.questao_texto}</p>)}
         </>
     )
 }
