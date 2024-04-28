@@ -64,7 +64,8 @@ def register(request):
         )
         Aluno.objects.create(user=user, curso='LEI-PL-3', comentario=comentario)
 
-        # return loginview(request)
+        login(request, user)
+        return redirect('votacao:index')
 
     return render(request, 'votacao/register.html')
 
@@ -204,7 +205,6 @@ class LoginView(APIView):
         user = authenticate(username=username, password=password)
         if user:
             token, _ = Token.objects.get_or_create(user=user)
-            print(token)
             login(request, user)
             return JsonResponse({'token': token.key})
         else:
