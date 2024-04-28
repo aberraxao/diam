@@ -2,21 +2,27 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.db.models import Count
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.core.files.storage import FileSystemStorage
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
+from rest_framework import status
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Questao, Opcao, Aluno, Imagem
+from .serializers import QuestaoSerializer
 
 
 def check_superuser(user):
     return user.is_superuser
 
 
-@login_required(login_url=reverse_lazy('votacao:login'))
+@login_required
 def index(request):
     context = {
         'latest_question_list': Questao.objects.order_by('-pub_data')[:10],
@@ -26,30 +32,10 @@ def index(request):
     return render(request, 'votacao/index.html', context)
 
 
-@require_http_methods(['GET', 'POST'])
-def loginview(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-
-        if not User.objects.filter(username=username).exists():
-            return render(request, 'votacao/login.html', {'error_message': 'Utilizador não encontrado'})
-
-        user = authenticate(username=username, password=password)
-        if user is None:
-            return render(request, 'votacao/login.html', {'error_message': 'Password errada'})
-
-        login(request, user)
-
-        return HttpResponseRedirect(reverse('votacao:index'))
-
-    return render(request, 'votacao/login.html')
-
-
 @require_http_methods(['GET'])
 def logoutview(request):
     logout(request)
-    return render(request, template_name='votacao/login.html')
+    return redirect('http://localhost:3000/votacao/login')
 
 
 @require_http_methods(['GET', 'POST'])
@@ -78,7 +64,8 @@ def register(request):
         )
         Aluno.objects.create(user=user, curso='LEI-PL-3', comentario=comentario)
 
-        return loginview(request)
+        login(request, user)
+        return redirect('votacao:index')
 
     return render(request, 'votacao/register.html')
 
@@ -95,7 +82,7 @@ def comentario_invalido(comentario: str) -> bool:
     return any(palavra in comentario for palavra in palavras_insultuosas)
 
 
-@login_required(login_url=reverse_lazy('votacao:login'))
+@login_required
 def detalhe(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
 
@@ -103,7 +90,7 @@ def detalhe(request, questao_id):
 
 
 @require_http_methods(['GET', 'POST'])
-@user_passes_test(check_superuser, login_url='votacao:login')
+@user_passes_test(check_superuser)
 def criar_questao(request):
     if request.method == 'POST':
         questao_texto = request.POST.get('novaquestao')
@@ -113,7 +100,7 @@ def criar_questao(request):
 
 
 @require_http_methods(['GET', 'POST'])
-@user_passes_test(check_superuser, login_url='votacao:login')
+@user_passes_test(check_superuser)
 def criar_opcao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     opcao_texto = request.POST.get('novaopcao')
@@ -123,7 +110,7 @@ def criar_opcao(request, questao_id):
 
 
 @require_http_methods(['POST'])
-@user_passes_test(check_superuser, login_url='votacao:login')
+@user_passes_test(check_superuser)
 def apagar_opcao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     try:
@@ -139,7 +126,7 @@ def apagar_opcao(request, questao_id):
 
 
 @require_http_methods(['POST'])
-@user_passes_test(check_superuser, login_url='votacao:login')
+@user_passes_test(check_superuser)
 def apagar_questao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     questao.delete()
@@ -147,7 +134,7 @@ def apagar_questao(request, questao_id):
 
 
 @require_http_methods(['POST'])
-@login_required(login_url=reverse_lazy('votacao:login'))
+@login_required
 def voto(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     try:
@@ -175,14 +162,14 @@ def voto(request, questao_id):
 
 
 @require_http_methods(['GET'])
-@login_required(login_url=reverse_lazy('votacao:login'))
+@login_required
 def resultados(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     opcoes = get_object_or_404(Questao, pk=questao_id).opcao_set.annotate(count=Count('user'))
     return render(request, 'votacao/resultados.html', {'questao': questao, 'opcoes': opcoes})
 
 
-@login_required(login_url=reverse_lazy('votacao:login'))
+@login_required
 def fazer_upload(request):
     if request.method == 'POST' and request.FILES.get('myfile') is not None:
         myfile = request.FILES['myfile']
@@ -195,3 +182,36 @@ def fazer_upload(request):
 
         return render(request, 'votacao/profile.html')
     return render(request, 'votacao/fazer_upload.html')
+
+
+@api_view(['GET', 'POST'])
+def questoes(request):
+    if request.method == 'GET':
+        lista_questoes = Questao.objects.all()
+        serializer = QuestaoSerializer(lista_questoes, context={'request': request}, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = QuestaoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoginView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            token, _ = Token.objects.get_or_create(user=user)
+            login(request, user)
+            return JsonResponse({'token': token.key})
+        else:
+            return JsonResponse({'error': 'Credenciais inválidas'}, status=400)
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('votacao:index'))
+
+        return redirect('http://localhost:3000/votacao/login')

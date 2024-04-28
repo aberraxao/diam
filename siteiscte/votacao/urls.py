@@ -2,12 +2,13 @@ from django.urls import path
 from django.views.generic import TemplateView
 
 from . import views
+from .views import LoginView
 
 app_name = 'votacao'
 urlpatterns = [
     path('', views.index),
     path('index', views.index, name='index'),
-    path('login', views.loginview, name='login'),
+    path('login/', LoginView.as_view(), name='login'),
     path('logout', views.logoutview, name='logout'),
     path('register', views.register, name='register'),
     path('informacao', TemplateView.as_view(template_name='votacao/profile.html'), name='informacao'),
@@ -19,4 +20,5 @@ urlpatterns = [
     path('<int:questao_id>/apagar_questao', views.apagar_questao, name='apagar_questao'),
     path('criar_questao', views.criar_questao, name='criar_questao'),
     path('fazer_upload', views.fazer_upload, name='fazer_upload'),
+    path('api/questoes/', views.questoes),
 ]
